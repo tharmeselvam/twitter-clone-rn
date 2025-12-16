@@ -1,28 +1,29 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
 import { RootNavigator } from './RootNavigator';
+import { Provider, useDispatch } from 'react-redux';
+import { AppDispatch, store } from '../store';
+import { useEffect } from 'react';
+import { checkAuth } from '../store/slices/authSlice';
+import Toast from 'react-native-toast-message';
+
+function AppBootstrap() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+      dispatch(checkAuth());
+  }, [dispatch]);
+
+  return <RootNavigator />
+}
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <NavigationContainer>
-        <RootNavigator />
+        <AppBootstrap />
+        <Toast />
       </NavigationContainer>
-    </AuthProvider>
+    </Provider>
   );
 }
 

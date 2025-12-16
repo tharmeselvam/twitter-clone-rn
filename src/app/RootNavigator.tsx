@@ -2,24 +2,20 @@ import React, { useContext, useEffect } from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../store";
-import { checkAuth } from "../store/slices/authSlice";
+
+import LogInScreen from "../ui/logInScreen";
 
 const Stack = createNativeStackNavigator();
 
 export const RootNavigator = () => {
-    const dispatch = useDispatch<AppDispatch>();
     const { isLoggedIn, isLoading } = useSelector((state: RootState) => state.auth);
-
-    useEffect(() => {
-        dispatch(checkAuth());
-    }, [dispatch]);
 
     return (
         <Stack.Navigator>
             {isLoggedIn ? (
-                <Stack.Screen name="Main" component={} />
+                <Stack.Screen name="test" component={LogInScreen} />
             ) : (
-                <Stack.Screen name="LogIn" component={} />
+                <Stack.Screen name="LogIn" component={LogInScreen} />
             )}
         </Stack.Navigator>
     )
