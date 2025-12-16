@@ -36,13 +36,13 @@ const LogInScreen = () => {
                 value={password}
                 onChangeText={setPassword}
                 autoCapitalize="none"
+                secureTextEntry={ true }
             />
 
             <Button 
                 title="Log In"
                 onPress={() => dispatch(logIn({ email, password }))}
-            />
-            
+            />        
         </View>
     );
 }

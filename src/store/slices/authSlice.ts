@@ -10,7 +10,7 @@ type AuthState = {
 
 const initialState: AuthState = {
     isLoggedIn: false,
-    isLoading: true,
+    isLoading: false,
     errorMessage: null
 }
 
@@ -32,7 +32,7 @@ export const checkAuth = createAsyncThunk(
 )
 
 export const logIn = createAsyncThunk(
-    'auth/login',
+    'auth/logIn',
     async (
         { email, password }: { email: string, password: string },
         { rejectWithValue }
@@ -62,13 +62,35 @@ const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(checkAuth.pending, (state) => { state.isLoading = true; })
-            .addCase(checkAuth.fulfilled, (state) => { state.isLoggedIn = true; state.isLoading = false; })
-            .addCase(checkAuth.rejected, (state) => { state.isLoggedIn = false; state.isLoading = false; })
+            // Check Auth
+            .addCase(checkAuth.pending, (state) => { 
+                state.isLoading = true; 
+                state.errorMessage = null; 
+            })
+            .addCase(checkAuth.fulfilled, (state) => { 
+                state.isLoggedIn = true; 
+                state.isLoading = false; 
+                state.errorMessage = null; 
+            })
+            .addCase(checkAuth.rejected, (state, action) => { 
+                state.isLoggedIn = false;
+                state.isLoading = false; 
+                state.errorMessage = action.payload as string;
+            })
 
-            .addCase(logIn.pending, (state) => { state.isLoading = true; })
-            .addCase(logIn.fulfilled, (state) => { state.isLoggedIn = true; state.isLoading = false; })
-            .addCase(logIn.rejected, (state, action) => { state.isLoggedIn = false; state.isLoading = false; state.errorMessage = action.payload as string })
+            // Log In
+            .addCase(logIn.pending, (state) => { 
+                state.isLoading = true; 
+                state.errorMessage = null;
+            })
+            .addCase(logIn.fulfilled, (state) => { 
+                state.isLoggedIn = true; 
+                state.isLoading = false;
+                state.errorMessage = null; 
+            })
+            .addCase(logIn.rejected, (state, action) => { 
+                state.isLoading = false; 
+                state.errorMessage = action.payload as string; })
     },
 });
 

@@ -12,10 +12,10 @@ export const authRepository = {
                 { email, password }
             );
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 const { accessToken, refreshToken } = response.data;
                 await SecureStorage.saveTokens({ accessToken, refreshToken });
-                
+
                 return { success: true };
             } else {
                 return { success: false, error: {
