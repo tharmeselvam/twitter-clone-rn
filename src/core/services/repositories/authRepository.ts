@@ -1,5 +1,6 @@
 import { Result } from "../../constants/types/Result";
 import apiClient from "../api/apiClient"
+import { SecureStorage } from "../secureStorage/SecureStorage";
 
 export const authRepository = {
     login: async (
@@ -13,6 +14,8 @@ export const authRepository = {
 
             if (response.status === 200) {
                 const { accessToken, refreshToken } = response.data;
+                await SecureStorage.saveTokens({ accessToken, refreshToken });
+                
                 return { success: true };
             } else {
                 return { success: false, error: {
