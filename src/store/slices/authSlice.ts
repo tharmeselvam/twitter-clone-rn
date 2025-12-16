@@ -19,6 +19,14 @@ export const logIn = createAsyncThunk(
         { email, password }: { email: string, password: string },
         { rejectWithValue }
     ) => {
+        if (email.length === 0 || password.length === 0) {
+            const errorMessage = email.length === 0
+                ? "Email cannot be empty."
+                : "Password cannot be empty."
+            
+            return rejectWithValue(errorMessage);
+        }
+
         const result = await authRepository.login({ email, password });
         console.log(result);
         

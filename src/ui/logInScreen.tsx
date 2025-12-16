@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, TextInput, StyleSheet, Button } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { logIn } from "../store/slices/authSlice";
+import Toast from "react-native-toast-message";
 
 const LogInScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { isLoading } = useSelector((state: RootState) => state.auth);
+    const { isLoading, errorMessage } = useSelector((state: RootState) => state.auth);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        if (errorMessage) {
+            Toast.show({
+                type: 'error',
+                text1: errorMessage
+            })
+        }
+    }, [errorMessage]);
 
     return (
         <View style={styles.container}>

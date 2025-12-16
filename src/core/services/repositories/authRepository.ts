@@ -11,12 +11,19 @@ export const authRepository = {
                 { email, password }
             );
 
-            const { accessToken, refreshToken } = response.data;
-            return { success: true };
+            if (response.status === 200) {
+                const { accessToken, refreshToken } = response.data;
+                return { success: true };
+            } else {
+                return { success: false, error: {
+                    message: response.data.message
+                }};
+            }
+            
         } catch (error: any) {
-            console.log(error);
+            console.log(error.message);
             return { success: false, error: {
-                message: error
+                message: error.response.data.message
             }}
         }
     }
