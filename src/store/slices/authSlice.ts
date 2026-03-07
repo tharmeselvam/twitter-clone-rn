@@ -23,10 +23,10 @@ export const checkAuth = createAsyncThunk(
             if (accessToken) {
                 return true;
             } else {
-                rejectWithValue("No token found.");
+                return rejectWithValue("No token found.");
             }
         } catch (error: any) {
-            rejectWithValue(error.message);
+            return rejectWithValue(error.message);
         }
     }
 )
