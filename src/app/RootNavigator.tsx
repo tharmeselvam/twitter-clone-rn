@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../store";
 
-import LogInScreen from "../ui/logInScreen";
+import LogInScreen from "../ui/screens/LogInScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +15,11 @@ export const RootNavigator = () => {
             {isLoggedIn ? (
                 <Stack.Screen name="test" component={LogInScreen} />
             ) : (
-                <Stack.Screen name="LogIn" component={LogInScreen} />
+                <Stack.Screen
+                    name="LogIn"
+                    component={LogInScreen}
+                    options={{ headerShown: false }}
+                />
             )}
         </Stack.Navigator>
     )
