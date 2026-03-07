@@ -9,6 +9,7 @@ import ProfileScreen from "../ui/screens/ProfileScreen";
 import SearchScreen from "../ui/screens/SearchScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../ui/colors";
+import { Image, StyleSheet } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,7 +34,21 @@ const MainTabs = () => {
                 }
             })}
         >
-            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen 
+                name="Home" 
+                component={HomeScreen} 
+                options={{
+                    headerShown: true,
+                    headerTitleAlign: 'center',
+                    headerTitle: () => (
+                        <Image 
+                            source={require('../assets/twitter-logo.png')}
+                            style={styles.headerLogo}
+                            resizeMode="contain"
+                        />
+                    )  
+                }}
+            />
             <Tab.Screen name="Search" component={SearchScreen} />
             <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
@@ -61,3 +76,10 @@ export const RootNavigator = () => {
         </Stack.Navigator>
     )
 }
+
+const styles = StyleSheet.create({
+    headerLogo: {
+        width: 30,
+        height: 30,
+    },
+})
