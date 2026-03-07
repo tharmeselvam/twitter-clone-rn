@@ -2,7 +2,7 @@ import axios from "axios";
 import { SecureStorage } from "../secureStorage/SecureStorage";
 
 declare module 'axios' {
-    export interface InternalAxiosRequestConfig {
+    export interface AxiosRequestConfig {
         skipAuth?: boolean;
     }
 }

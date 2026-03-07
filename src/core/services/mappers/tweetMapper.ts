@@ -9,7 +9,7 @@ const mapTweet = (apiTweet: ApiTweet): Tweet => ({
         displayName: apiTweet.user.profile.name,
     },
     content: apiTweet.content,
-    createdAt: new Date(apiTweet.createdAt),
+    createdAt: apiTweet.createdAt,
 });
 
 export const tweetFeedMapper = (response: ApiTweetFeedResponse): TweetFeed => ({

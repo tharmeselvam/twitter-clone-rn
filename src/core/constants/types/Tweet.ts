@@ -6,7 +6,7 @@ export interface Tweet {
         displayName: string;
     };
     content: string;
-    createdAt: Date;
+    createdAt: string;
 }
 
 export interface TweetFeed {
