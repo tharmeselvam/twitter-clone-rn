@@ -15,15 +15,36 @@ const LogInScreen = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [validationErrorMessage, setValidationErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        if (errorMessage) {
+        const error = validationErrorMessage ?? errorMessage
+        if (error) {
             Toast.show({
                 type: 'error',
-                text1: errorMessage
+                text1: error,
             })
         }
-    }, [errorMessage]);
+    }, [errorMessage, validationErrorMessage]);
+
+    const validateForm = (): boolean => {
+        if (email.length === 0) {
+            setValidationErrorMessage("Email cannot be empty.");
+            return false;
+        }
+        if (password.length === 0) {
+            setValidationErrorMessage("Password cannot be empty.");
+            return false;
+        }
+        setValidationErrorMessage(null); 
+        return true;
+    };
+
+    const handleLogIn = () => {
+        if (!validateForm()) return;
+    
+        dispatch(logIn({ email, password }));
+    };
 
     return (
         <View style={rootStyles.screenContainer}>
@@ -56,7 +77,7 @@ const LogInScreen = () => {
                     title={isLoading ? "Logging in..." : "Log In"}
                     isDisabled={isLoading}
                     backgroundColor={colors.primary}
-                    onPress={() => dispatch(logIn({ email, password }))}
+                    onPress={handleLogIn}
                 />
             </View>
 
