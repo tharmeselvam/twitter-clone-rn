@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SecureStorage } from "../secureStorage/SecureStorage";
+import { SecureStorage } from "../../utils/secureStorage";
 
 declare module 'axios' {
     export interface AxiosRequestConfig {

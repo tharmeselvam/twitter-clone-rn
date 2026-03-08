@@ -6,6 +6,6 @@ export const rootStyles = StyleSheet.create({
     screenContainer: {
         flex: 1,
         backgroundColor: colors.white,
-        padding: 16,
+        paddingHorizontal: 16,
     },
 })
