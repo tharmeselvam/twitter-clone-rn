@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authRepository } from "../../core/services/repositories/authRepository";
-import { SecureStorage } from "../../core/services/secureStorage/SecureStorage";
 
 type AuthState = {
     isLoggedIn: boolean;
@@ -14,20 +13,11 @@ const initialState: AuthState = {
     errorMessage: null
 }
 
-export const checkAuth = createAsyncThunk(
+export const checkAuth = createAsyncThunk<boolean, void>(
     'auth/checkAuth',
     async (_, { rejectWithValue }) => {
-        try {
-            const accessToken = await SecureStorage.getAccessToken();
-        
-            if (accessToken) {
-                return true;
-            } else {
-                return rejectWithValue("No token found.");
-            }
-        } catch (error: any) {
-            return rejectWithValue(error.message);
-        }
+        const isAuthenticated = await authRepository.checkAuthStatus();
+        return isAuthenticated;
     }
 )
 
@@ -37,16 +27,7 @@ export const logIn = createAsyncThunk(
         { email, password }: { email: string, password: string },
         { rejectWithValue }
     ) => {
-        if (email.length === 0 || password.length === 0) {
-            const errorMessage = email.length === 0
-                ? "Email cannot be empty."
-                : "Password cannot be empty."
-            
-            return rejectWithValue(errorMessage);
-        }
-
         const result = await authRepository.login({ email, password });
-        console.log(result);
         
         if (result.success) {
             return true;
@@ -67,15 +48,15 @@ const authSlice = createSlice({
                 state.isLoading = true; 
                 state.errorMessage = null; 
             })
-            .addCase(checkAuth.fulfilled, (state) => { 
-                state.isLoggedIn = true; 
+            .addCase(checkAuth.fulfilled, (state, action) => { 
+                state.isLoggedIn = action.payload; 
                 state.isLoading = false; 
                 state.errorMessage = null; 
             })
             .addCase(checkAuth.rejected, (state, action) => { 
                 state.isLoggedIn = false;
                 state.isLoading = false; 
-                state.errorMessage = action.payload as string;
+                state.errorMessage = null;
             })
 
             // Log In
