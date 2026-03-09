@@ -22,7 +22,9 @@ const TweetListItem: React.FC<TweetListItemProps> = ({ tweet }) => {
                 <View style={styles.headerContainer}>
                     <View style={styles.authorContainer}>
                         <Text style={styles.displayName}>{tweet.author.displayName}</Text>
-                        <Text style={styles.username}>{tweet.author.username}</Text>
+                        <Text style={styles.username} numberOfLines={1} ellipsizeMode="tail">
+                            {tweet.author.username}
+                        </Text>
                     </View>
 
                     <Text style={styles.date}>
@@ -59,37 +61,44 @@ const styles = StyleSheet.create({
     },
     leftContainer: {
         paddingTop: 4,
-        width: 50,
+        width: 45,
     },
     avatar: {
-        width: 50,
-        height: 50,
+        width: 45,
+        height: 45,
         borderRadius: 50,
-        backgroundColor: 'gray'
+        backgroundColor: 'gray',
     },
     rightContainer: {
-        flex: 20,
+        flex: 1,
         flexDirection: 'column',
         paddingLeft: 10,
     },
     headerContainer: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: 20,
+        gap: 15,
     },
     authorContainer: {
+        flex: 1,
         flexDirection: 'row',
-        gap: 10,
+        justifyContent: 'flex-start',
+        gap: 8,
+        minWidth: 0,
     },
     displayName: {
         fontWeight: 'bold',
         fontSize: 16,
+        flexShrink: 0,
     },
     username: {
         fontWeight: 'normal',
         fontSize: 16,
-        color: 'gray'
+        color: 'gray',
+        flexShrink: 1,
+        minWidth: 0,
     },
     date: {
         fontSize: 16,
@@ -99,7 +108,7 @@ const styles = StyleSheet.create({
         flex: 3,
         flexDirection: 'column',
         alignItems: 'flex-start',
-        paddingVertical: 8,
+        paddingVertical: 6,
     },
     content: {
         fontSize: 16,
