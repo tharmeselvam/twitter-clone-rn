@@ -1,11 +1,12 @@
 import { ApiTweet, ApiTweetFeedResponse } from "../../constants/types/API";
 import { Tweet, TweetFeed } from "../../constants/types/Tweet";
+import formatUsername from "../../utils/formatUsername";
 
 const mapTweet = (apiTweet: ApiTweet): Tweet => ({
     id: apiTweet.id,
     author: {
         id: apiTweet.user.id,
-        username: apiTweet.user.username,
+        username: formatUsername(apiTweet.user.username),
         displayName: apiTweet.user.profile.name,
     },
     content: apiTweet.content,
