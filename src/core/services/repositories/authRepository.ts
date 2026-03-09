@@ -23,7 +23,8 @@ export const authRepository = {
         try {
             const response = await apiClient.post(
                 '/auth/log-in',
-                { email, password }
+                { email, password },
+                { skipAuth: true }
             );
 
             if (response.status === 201) {
