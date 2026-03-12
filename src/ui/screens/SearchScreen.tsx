@@ -4,25 +4,41 @@ import SearchBar from "../components/SearchBar"
 import { NavigationState, SceneRendererProps, TabBar, TabView } from "react-native-tab-view"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../store"
-import { fetchSearchedTweets, setQuery } from "../../store/slices/searchSlice"
-import { StyleSheet, Text, useWindowDimensions, View } from "react-native"
+import { fetchSearchedTweets, fetchSearchedUsers, resetSearch, setQuery } from "../../store/slices/searchSlice"
+import { StyleSheet, useWindowDimensions, View } from "react-native"
 import { useState } from "react"
 import { TabRoute } from "../../core/constants/types/SearchTabRoute"
 import { colors } from "../colors"
 import SearchTweetsResults from "../components/SearchTweetsResults"
+import SearchUsersResults from "../components/SearchUsersResults"
 
 
 const SearchScreen = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { query, tweets } = useSelector((state: RootState) => state.search)
+    const { query, tweetsResults, usersResults } = useSelector((state: RootState) => state.search)
 
     const layout = useWindowDimensions()
     const [index, setIndex] = useState<number>(0)
 
     const handleSearch = () => {
-        if (query === '') return
+        if (query.trim() === '') return
 
-        dispatch(fetchSearchedTweets(query))
+        dispatch(resetSearch())
+        if (index === 0) {
+            dispatch(fetchSearchedTweets(query))
+        } else {
+            dispatch(fetchSearchedUsers(query))
+        }
+    }
+
+    const handleTabSwitch = (index: number) => {
+        setIndex(index)
+
+        if (index === 0 && tweetsResults.status === 'inactive') {
+            dispatch(fetchSearchedTweets(query))
+        } else if (index === 1 && usersResults.status === 'inactive') {
+            dispatch(fetchSearchedUsers(query))
+        }
     }
 
     const routes: TabRoute[] = [
@@ -33,10 +49,10 @@ const SearchScreen = () => {
     const renderScene = ({ route }: SceneRendererProps & { route: TabRoute }) => {
         switch (route.key){
             case 'tweets':
-                return <SearchTweetsResults tweets={tweets}/>
+                return <SearchTweetsResults tweets={tweetsResults.data}/>
 
             case 'people':
-                return <View />
+                return <SearchUsersResults users={usersResults.data} />
         }  
     }
 
@@ -65,7 +81,7 @@ const SearchScreen = () => {
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
-                onIndexChange={setIndex}
+                onIndexChange={handleTabSwitch}
                 renderTabBar={renderTabBar}
                 initialLayout={{ width: layout.width }}
                 
