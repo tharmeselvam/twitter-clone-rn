@@ -11,12 +11,12 @@ const mapTweet = (apiTweet: ApiTweet): Tweet => ({
     },
     content: apiTweet.content,
     createdAt: apiTweet.createdAt,
-});
+})
 
 export const tweetFeedMapper = (response: ApiTweetFeedResponse): TweetFeed => ({
     page: response.page,
     limit: response.limit,
     total: response.total,
     tweets: response.data.map(mapTweet),
-});
+})
     
