@@ -7,7 +7,7 @@ interface CancelButtonProps {
 const CancelButton = ({ onPress }: CancelButtonProps) => {
     return (
         <Pressable
-            onPressIn={onPress}
+            onPress={onPress}
         >
             <Text style={styles.text}>Cancel</Text>
         </Pressable>

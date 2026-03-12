@@ -5,6 +5,7 @@ import { User, UserFeed } from "../../core/constants/types/User";
 import { ResultsState } from "../../core/constants/types/ResultsState";
 
 type SearchState = {
+    hasSearched: boolean;
     query: string;
     tweetsResults: ResultsState<Tweet>;
     usersResults: ResultsState<User>;
@@ -25,6 +26,7 @@ const initialUsersState: ResultsState<User> = {
 }
 
 const initialState: SearchState = {
+    hasSearched: false,
     query: '',
     tweetsResults: initialTweetsState,
     usersResults: initialUsersState
@@ -61,6 +63,7 @@ const searchSlice = createSlice({
     initialState,
     reducers: {
         setQuery: (state, action) => {state.query = action.payload},
+        setHasSearced: (state, action) => {state.hasSearched = action.payload},
         resetSearch: (state) => {
             state.tweetsResults = initialTweetsState
             state.usersResults = initialUsersState
@@ -106,5 +109,5 @@ const searchSlice = createSlice({
     }
 })
 
-export const { setQuery, resetSearch } = searchSlice.actions
+export const { setQuery, setHasSearced, resetSearch } = searchSlice.actions
 export default searchSlice.reducer

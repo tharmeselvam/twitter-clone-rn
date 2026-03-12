@@ -48,10 +48,9 @@ export default SearchBar
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 16,
-        paddingHorizontal: 16,
         gap: 18,
     },
     inputContainer: {

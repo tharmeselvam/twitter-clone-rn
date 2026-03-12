@@ -4,18 +4,19 @@ import SearchBar from "../components/SearchBar"
 import { NavigationState, SceneRendererProps, TabBar, TabView } from "react-native-tab-view"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../store"
-import { fetchSearchedTweets, fetchSearchedUsers, resetSearch, setQuery } from "../../store/slices/searchSlice"
+import { fetchSearchedTweets, fetchSearchedUsers, resetSearch, setHasSearced, setQuery } from "../../store/slices/searchSlice"
 import { StyleSheet, useWindowDimensions, View } from "react-native"
 import { useState } from "react"
 import { TabRoute } from "../../core/constants/types/SearchTabRoute"
 import { colors } from "../colors"
 import SearchTweetsResults from "../components/SearchTweetsResults"
 import SearchUsersResults from "../components/SearchUsersResults"
+import BackButton from "../components/BackButton"
 
 
 const SearchScreen = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { query, tweetsResults, usersResults } = useSelector((state: RootState) => state.search)
+    const { query, hasSearched, tweetsResults, usersResults } = useSelector((state: RootState) => state.search)
 
     const layout = useWindowDimensions()
     const [index, setIndex] = useState<number>(0)
@@ -24,6 +25,7 @@ const SearchScreen = () => {
         if (query.trim() === '') return
 
         dispatch(resetSearch())
+        dispatch(setHasSearced(true))
         if (index === 0) {
             dispatch(fetchSearchedTweets(query))
         } else {
@@ -47,13 +49,13 @@ const SearchScreen = () => {
     ]
 
     const renderScene = ({ route }: SceneRendererProps & { route: TabRoute }) => {
-        switch (route.key){
+        switch (route.key) {
             case 'tweets':
-                return <SearchTweetsResults tweets={tweetsResults.data}/>
+                return <SearchTweetsResults tweets={tweetsResults.data} />
 
             case 'people':
                 return <SearchUsersResults users={usersResults.data} />
-        }  
+        }
     }
 
     const renderTabBar = (props: SceneRendererProps & { navigationState: NavigationState<TabRoute> }) => (
@@ -64,28 +66,42 @@ const SearchScreen = () => {
             activeColor={colors.black}
             inactiveColor={colors.gray600}
             options={{
-                'tweets': { labelStyle: styles.label},
-                'people': { labelStyle: styles.label}
+                'tweets': { labelStyle: styles.label },
+                'people': { labelStyle: styles.label }
             }}
         />
     )
 
     return (
         <SafeAreaView style={rootStyles.screenContainer}>
-            <SearchBar
-                value={query}
-                onChangeText={(text) => dispatch(setQuery(text))}
-                onSubmitEditing={handleSearch}
-            />
+            <View style={[styles.header, !hasSearched ? {paddingLeft: 16} : null]}>
+                {hasSearched &&
+                    <BackButton onPress={() => {
+                        dispatch(resetSearch())
+                        dispatch(setHasSearced(false))
+                    }}
+                    />
+                }
 
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={handleTabSwitch}
-                renderTabBar={renderTabBar}
-                initialLayout={{ width: layout.width }}
-                
-            />
+                <SearchBar
+                    value={query}
+                    onChangeText={(text) => dispatch(setQuery(text))}
+                    onSubmitEditing={handleSearch}
+                />
+            </View>
+
+
+            {hasSearched &&
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderScene={renderScene}
+                    onIndexChange={handleTabSwitch}
+                    renderTabBar={renderTabBar}
+                    initialLayout={{ width: layout.width }}
+
+                />
+            }
+
         </SafeAreaView>
     )
 }
@@ -93,6 +109,12 @@ const SearchScreen = () => {
 export default SearchScreen
 
 const styles = StyleSheet.create({
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 16,
+        paddingRight: 16,
+    },
     tabBar: {
         backgroundColor: 'transparent',
         elevation: 0,
