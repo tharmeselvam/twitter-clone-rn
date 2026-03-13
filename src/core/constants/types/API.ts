@@ -5,14 +5,20 @@ export interface ApiTweet {
     createdAt: string;
 }
 
-interface ApiUser {
+export interface ApiUser<TProfile extends ApiUserProfile = ApiUserProfile> {
     id: number;
     username: string;
-    profile: ApiUserProfile;
+    profile: TProfile;
 }
+
+export type ApiUserWithBio = ApiUser<ApiUserProfileWithBio>
 
 interface ApiUserProfile {
     name: string;
+}
+
+interface ApiUserProfileWithBio extends ApiUserProfile {
+    bio: string;
 }
 
 export interface ApiTweetFeedResponse {
@@ -20,4 +26,11 @@ export interface ApiTweetFeedResponse {
     limit: number;
     total: number;
     data: ApiTweet[];
+}
+
+export interface ApiUserFeedResponse {
+    page: number;
+    limit: number;
+    total: number;
+    data: ApiUserWithBio[];
 }
