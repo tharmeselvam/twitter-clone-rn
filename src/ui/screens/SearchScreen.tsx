@@ -4,7 +4,7 @@ import SearchBar from "../components/SearchBar"
 import { NavigationState, SceneRendererProps, TabBar, TabView } from "react-native-tab-view"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../store"
-import { fetchSearchedTweets, fetchSearchedUsers, resetSearch, setHasSearced, setQuery } from "../../store/slices/searchSlice"
+import { clearSearch, fetchSearchedTweets, fetchSearchedUsers, resetSearch, setQuery } from "../../store/slices/searchSlice"
 import { StyleSheet, useWindowDimensions, View } from "react-native"
 import { useState } from "react"
 import { TabRoute } from "../../core/constants/types/SearchTabRoute"
@@ -25,7 +25,6 @@ const SearchScreen = () => {
         if (query.trim() === '') return
 
         dispatch(resetSearch())
-        dispatch(setHasSearced(true))
         if (index === 0) {
             dispatch(fetchSearchedTweets(query))
         } else {
@@ -76,11 +75,7 @@ const SearchScreen = () => {
         <SafeAreaView style={rootStyles.screenContainer}>
             <View style={[styles.header, !hasSearched ? {paddingLeft: 16} : null]}>
                 {hasSearched &&
-                    <BackButton onPress={() => {
-                        dispatch(resetSearch())
-                        dispatch(setHasSearced(false))
-                    }}
-                    />
+                    <BackButton onPress={() => {dispatch(clearSearch())}} />
                 }
 
                 <SearchBar

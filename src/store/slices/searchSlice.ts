@@ -63,27 +63,32 @@ const searchSlice = createSlice({
     initialState,
     reducers: {
         setQuery: (state, action) => {state.query = action.payload},
-        setHasSearced: (state, action) => {state.hasSearched = action.payload},
         resetSearch: (state) => {
             state.tweetsResults = initialTweetsState
             state.usersResults = initialUsersState
+        },
+        clearSearch: () => {
+            return initialState;
         }
     },
     extraReducers: (builder) => {
         builder
             // Fetch searched tweets
             .addCase(fetchSearchedTweets.pending, (state) => {
+                state.hasSearched = true
                 state.tweetsResults.isLoading = true
                 state.tweetsResults.status = 'active'
                 state.tweetsResults.error = null
             })
             .addCase(fetchSearchedTweets.fulfilled, (state, action) => {
+                state.hasSearched = true
                 state.tweetsResults.isLoading = false
                 state.tweetsResults.data = action.payload.tweets
                 state.tweetsResults.status = 'active'
                 state.tweetsResults.error= null
             })
             .addCase(fetchSearchedTweets.rejected, (state, action) => {
+                state.hasSearched = true
                 state.tweetsResults.isLoading = false
                 state.tweetsResults.status = 'active'
                 state.tweetsResults.error = action.payload as string
@@ -91,17 +96,20 @@ const searchSlice = createSlice({
 
             // Fetch searched users
             .addCase(fetchSearchedUsers.pending, (state) => {
+                state.hasSearched = true
                 state.usersResults.isLoading = true
                 state.usersResults.status = 'active'
                 state.usersResults.error = null
             })
             .addCase(fetchSearchedUsers.fulfilled, (state, action) => {
+                state.hasSearched = true
                 state.usersResults.isLoading = false
                 state.usersResults.data = action.payload.users
                 state.usersResults.status = 'active'
                 state.usersResults.error = null
             })
             .addCase(fetchSearchedUsers.rejected, (state, action) => {
+                state.hasSearched = true
                 state.usersResults.isLoading = false
                 state.usersResults.status = 'active'
                 state.usersResults.error = action.payload as string
@@ -109,5 +117,5 @@ const searchSlice = createSlice({
     }
 })
 
-export const { setQuery, setHasSearced, resetSearch } = searchSlice.actions
+export const { setQuery, resetSearch, clearSearch } = searchSlice.actions
 export default searchSlice.reducer
