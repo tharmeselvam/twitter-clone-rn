@@ -13,3 +13,8 @@ export interface UserFeed {
     total: number;
     users: User[];
 }
+
+export interface UserFull extends User {
+    followerCount: number;
+    followingCount: number;
+}

@@ -1,5 +1,5 @@
-import { ApiUserFeedResponse, ApiUserWithBio } from "../../constants/types/API";
-import { User, UserFeed } from "../../constants/types/User";
+import { ApiUserFeedResponse, ApiUserFull, ApiUserWithBio } from "../../constants/types/API";
+import { User, UserFeed, UserFull } from "../../constants/types/User";
 import formatUsername from "../../utils/formatUsername";
 
 const mapUser = (apiUser: ApiUserWithBio): User => ({
@@ -9,6 +9,17 @@ const mapUser = (apiUser: ApiUserWithBio): User => ({
         name: apiUser.profile.name,
         bio: apiUser.profile.bio,
     }
+})
+
+export const mapUserFull = (apiUser: ApiUserFull): UserFull => ({
+    id: apiUser.id,
+    username: formatUsername(apiUser.username),
+    profile: {
+        name: apiUser.profile.name,
+        bio: apiUser.profile.bio,
+    },
+    followerCount: apiUser.followerCount,
+    followingCount: apiUser.followingCount,
 })
 
 export const userFeedMapper = (response: ApiUserFeedResponse): UserFeed => ({
