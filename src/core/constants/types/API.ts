@@ -34,3 +34,8 @@ export interface ApiUserFeedResponse {
     total: number;
     data: ApiUserWithBio[];
 }
+
+export interface ApiUserFull extends ApiUserWithBio {
+    followerCount: number;
+    followingCount: number;
+}

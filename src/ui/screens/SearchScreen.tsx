@@ -1,4 +1,4 @@
-import { rootStyles } from "../styles"
+import { rootStyles, tabBarStyleProps } from "../styles"
 import { SafeAreaView } from "react-native-safe-area-context"
 import SearchBar from "../components/SearchBar"
 import { NavigationState, SceneRendererProps, TabBar, TabView } from "react-native-tab-view"
@@ -60,13 +60,11 @@ const SearchScreen = () => {
     const renderTabBar = (props: SceneRendererProps & { navigationState: NavigationState<TabRoute> }) => (
         <TabBar
             {...props}
-            style={styles.tabBar}
-            indicatorStyle={styles.indicator}
-            activeColor={colors.black}
-            inactiveColor={colors.gray600}
+            style={rootStyles.tabBar}
+            {...tabBarStyleProps}
             options={{
-                'tweets': { labelStyle: styles.label },
-                'people': { labelStyle: styles.label }
+                'tweets': { labelStyle: rootStyles.tabBarLabel },
+                'people': { labelStyle: rootStyles.tabBarLabel }
             }}
         />
     )
@@ -110,20 +108,7 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         paddingRight: 16,
     },
-    tabBar: {
-        backgroundColor: 'transparent',
-        elevation: 0,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: colors.gray300,
-        marginHorizontal: 0
-    },
-    indicator: {
-        backgroundColor: colors.primary,
-        height: 4,
-        borderRadius: 50
-    },
-    label: {
-        fontSize: 16,
-        fontWeight: 'bold'
-    }
+    
+    
+    
 })
