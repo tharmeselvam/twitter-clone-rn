@@ -2,23 +2,23 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchRepository } from "../../core/services/repositories/searchRepository";
 import { Tweet, TweetFeed } from "../../core/constants/types/Tweet";
 import { User, UserFeed } from "../../core/constants/types/User";
-import { ResultsState } from "../../core/constants/types/ResultsState";
+import { SearchResultsState } from "../../core/constants/types/ResultsState";
 
 type SearchState = {
     hasSearched: boolean;
     query: string;
-    tweetsResults: ResultsState<Tweet>;
-    usersResults: ResultsState<User>;
+    tweetsResults: SearchResultsState<Tweet>;
+    usersResults: SearchResultsState<User>;
 }
 
-const initialTweetsState: ResultsState<Tweet> = {
+const initialTweetsState: SearchResultsState<Tweet> = {
     isLoading: false,
     data: [],
     status: 'inactive',
     error: null,
 }
 
-const initialUsersState: ResultsState<User> = {
+const initialUsersState: SearchResultsState<User> = {
     isLoading: false,
     data: [],
     status: 'inactive',

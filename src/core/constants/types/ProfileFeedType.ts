@@ -1,0 +1,1 @@
+export type ProfileFeedType = 'tweets' | 'replies' | 'likedTweets'
