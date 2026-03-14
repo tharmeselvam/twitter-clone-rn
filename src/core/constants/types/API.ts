@@ -13,14 +13,6 @@ export interface ApiUser<TProfile extends ApiUserProfile = ApiUserProfile> {
 
 export type ApiUserWithBio = ApiUser<ApiUserProfileWithBio>
 
-interface ApiUserProfile {
-    name: string;
-}
-
-interface ApiUserProfileWithBio extends ApiUserProfile {
-    bio: string;
-}
-
 export interface ApiTweetFeedResponse {
     page: number;
     limit: number;
@@ -35,7 +27,20 @@ export interface ApiUserFeedResponse {
     data: ApiUserWithBio[];
 }
 
-export interface ApiUserFull extends ApiUserWithBio {
+export interface ApiUserFull extends ApiUser<ApiUserProfileFull> {
     followerCount: number;
     followingCount: number;
+}
+
+interface ApiUserProfile {
+    name: string;
+}
+
+interface ApiUserProfileWithBio extends ApiUserProfile {
+    bio: string | null;
+}
+
+interface ApiUserProfileFull extends ApiUserProfileWithBio {
+    profileImageUri: string | null;
+    headerImageUri: string | null;
 }

@@ -29,15 +29,18 @@ const UserListItem = ({ user }: UserListItemProps) => {
                         </Text>
                     </View>
 
-                    <SmallFollowButton onPress={() => {}}/>
-                    
+                    <SmallFollowButton onPress={() => {}} />
+
                 </View>
 
-                <View style={styles.bioContainer}>
-                    <Text style={styles.bio} numberOfLines={3} ellipsizeMode="tail">
-                        {user.profile.bio}
-                    </Text>
-                </View>
+                {user.profile.bio &&
+                    <View style={styles.bioContainer}>
+                        <Text style={styles.bio} numberOfLines={3} ellipsizeMode="tail">
+                            {user.profile.bio}
+                        </Text>
+                    </View>
+                }
+
             </View>
         </View>
     )

@@ -34,9 +34,11 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                     <Text style={styles.name}>{user.profile.name}</Text>
                     <Text style={styles.username}>{user.username}</Text>
                 </View>
-
-                <Text style={[styles.text, styles.bio]}>{user.profile.bio}</Text>
-
+                
+                {user.profile.bio &&
+                    <Text style={[styles.text, styles.bio]}>{user.profile.bio}</Text>
+                }
+                
                 <View style={styles.followStatsContainer}>
                     <View style={styles.followStatSubContainer}>
                         <Text style={[styles.text, styles.followStatNumber]}>{user.followerCount}</Text>
