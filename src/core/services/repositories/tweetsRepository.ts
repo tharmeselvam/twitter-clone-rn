@@ -111,4 +111,32 @@ export const tweetsRepository = {
             }
         }
     },
+
+    createTweet: async (tweetContent: string): Promise<Result<void>> => {
+        try {
+            const response = await apiClient.post('tweets/create', {
+                content: tweetContent
+            })
+
+            if (response.status === 201) {
+                return {
+                    success: true
+                }
+            }
+
+            return {
+                success: false,
+                error: {
+                    message: response.data.message
+                }
+            }
+        } catch(error) {
+            return {
+                success: false,
+                error: {
+                    message: "Failed to send tweet."
+                }
+            }
+        }
+    }
 };
