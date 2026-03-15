@@ -8,6 +8,7 @@ const mapUser = (apiUser: ApiUserWithBio): User => ({
     profile: {
         name: apiUser.profile.name,
         bio: apiUser.profile.bio,
+        profileImageUri: apiUser.profile.profileImageUri,
     }
 })
 
@@ -17,6 +18,8 @@ export const mapUserFull = (apiUser: ApiUserFull): UserFull => ({
     profile: {
         name: apiUser.profile.name,
         bio: apiUser.profile.bio,
+        profileImageUri: apiUser.profile.profileImageUri,
+        headerImageUri: apiUser.profile.headerImageUri,
     },
     followerCount: apiUser.followerCount,
     followingCount: apiUser.followingCount,

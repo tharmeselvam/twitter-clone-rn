@@ -3,6 +3,7 @@ import { colors } from "../colors"
 import { User } from "../../core/constants/types/User";
 import Button from "./Button";
 import SmallFollowButton from "./SmallFollowButton";
+import ProfileImage from "./ProfileImage";
 
 interface UserListItemProps {
     user: User;
@@ -12,9 +13,9 @@ const UserListItem = ({ user }: UserListItemProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.leftContainer}>
-                <Image
-                    source={require('../../assets/user-placeholder.png')}
-                    style={styles.avatar}
+                <ProfileImage
+                    imageUri={user.profile.profileImageUri}
+                    style={styles.profileImage}
                 />
             </View>
 
@@ -29,15 +30,18 @@ const UserListItem = ({ user }: UserListItemProps) => {
                         </Text>
                     </View>
 
-                    <SmallFollowButton onPress={() => {}}/>
-                    
+                    <SmallFollowButton onPress={() => {}} />
+
                 </View>
 
-                <View style={styles.bioContainer}>
-                    <Text style={styles.bio} numberOfLines={3} ellipsizeMode="tail">
-                        {user.profile.bio}
-                    </Text>
-                </View>
+                {user.profile.bio &&
+                    <View style={styles.bioContainer}>
+                        <Text style={styles.bio} numberOfLines={3} ellipsizeMode="tail">
+                            {user.profile.bio}
+                        </Text>
+                    </View>
+                }
+
             </View>
         </View>
     )
@@ -58,11 +62,8 @@ const styles = StyleSheet.create({
         paddingTop: 4,
         width: 40,
     },
-    avatar: {
+    profileImage: {
         width: 40,
-        height: 40,
-        borderRadius: 50,
-        backgroundColor: 'gray',
     },
     rightContainer: {
         flex: 1,

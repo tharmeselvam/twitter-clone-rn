@@ -1,35 +1,36 @@
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from "react-native"
 import { colors } from "../colors"
 
-interface AvatarProps {
-    imageUri?: string;
+interface ProfileImageProps {
+    imageUri: string | null;
     style: StyleProp<ViewStyle>; 
 }
 
-const Avatar = ({ imageUri, style }: AvatarProps) => {
+const ProfileImage = ({ imageUri, style }: ProfileImageProps) => {
     return (
-        <View style={[styles.avatar, style]}>
+        <View style={[styles.profileImage, style]}>
             <Image
-                style={styles.avatarImage}
+                style={styles.image}
                 source={
-                    require('../../assets/user-placeholder.png')
+                    imageUri
+                        ? { uri: imageUri }
+                        : require('../../assets/user-placeholder.png')
                 }   
             />
         </View>
     )
 }
 
-export default Avatar
+export default ProfileImage
 
 const styles = StyleSheet.create({
-    avatar: {
-        backgroundColor: colors.gray200,
-        width: 100,
+    profileImage: {
+        backgroundColor: colors.gray250,
         aspectRatio: 1,
         borderRadius: 50,
         overflow: 'hidden',
     },
-    avatarImage: {
+    image: {
         width: '100%',
         height: '100%',
         resizeMode: 'cover',

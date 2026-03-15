@@ -4,6 +4,7 @@ export interface Tweet {
         id: number;
         username: string;
         displayName: string;
+        profileImageUri: string | null;
     };
     content: string;
     createdAt: string;

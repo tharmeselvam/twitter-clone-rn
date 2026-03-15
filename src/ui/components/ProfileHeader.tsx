@@ -3,7 +3,7 @@ import { colors } from "../colors"
 import { UserFull } from "../../core/constants/types/User"
 import IconButton from "./IconButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Avatar from "./Avatar";
+import ProfileImage from "./ProfileImage";
 
 interface ProfileHeaderProps {
     user: UserFull;
@@ -12,11 +12,16 @@ interface ProfileHeaderProps {
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
     return (
         <View style={styles.container} pointerEvents="box-none">
-            <View style={styles.headerPhoto}>
-
+            <View style={styles.headerImageContainer}>
+                {user.profile.headerImageUri &&
+                    <Image
+                        source={{ uri: user.profile.headerImageUri }}
+                        style={styles.headerImage}
+                    />
+                }
             </View>
 
-            <Avatar style={styles.avatar} />
+            <ProfileImage style={styles.profileImage} imageUri={user.profile.profileImageUri} />
 
             <View style={styles.optionsContainer}>
                 <IconButton 
@@ -34,9 +39,11 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                     <Text style={styles.name}>{user.profile.name}</Text>
                     <Text style={styles.username}>{user.username}</Text>
                 </View>
-
-                <Text style={[styles.text, styles.bio]}>{user.profile.bio}</Text>
-
+                
+                {user.profile.bio &&
+                    <Text style={[styles.text, styles.bio]}>{user.profile.bio}</Text>
+                }
+                
                 <View style={styles.followStatsContainer}>
                     <View style={styles.followStatSubContainer}>
                         <Text style={[styles.text, styles.followStatNumber]}>{user.followerCount}</Text>
@@ -59,11 +66,15 @@ const styles = StyleSheet.create({
     container: {
 
     },
-    headerPhoto: {
+    headerImageContainer: {
         height: 140,
         backgroundColor: colors.primary
     },
-    avatar: {
+    headerImage: {
+        resizeMode: 'cover',
+    },
+    profileImage: {
+        width: 100,
         position: 'absolute',
         top: 100,
         left: 16,
