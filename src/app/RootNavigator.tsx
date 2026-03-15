@@ -1,5 +1,5 @@
 import React from "react";
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,19 +15,18 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MainTabParamList, RootStackParamList } from "../core/constants/types/RootStackParamList";
 import { useNavigation } from "@react-navigation/native";
 import CreateTweetScreen from "../ui/screens/CreateTweetScreen";
-import CancelButton from "../ui/components/CancelButton";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
-const MainTabs = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'MainTabs'>
+
+const MainTabs = ({ navigation }: Props) => {
     const insets = useSafeAreaInsets()
     const NAV_BAR_HEIGHT = 49
 
     const fabBottom = insets.bottom + NAV_BAR_HEIGHT + 16
-
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
     return (
         <View style={{ flex: 1 }}>

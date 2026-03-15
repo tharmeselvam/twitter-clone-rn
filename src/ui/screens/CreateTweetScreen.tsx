@@ -2,8 +2,7 @@ import { StyleSheet, TextInput, View } from "react-native"
 import { rootStyles } from "../styles"
 import CancelButton from "../components/CancelButton"
 import TweetButton from "../components/TweetButton"
-import { useNavigation } from "@react-navigation/native"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../../core/constants/types/RootStackParamList"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { colors } from "../colors"
@@ -11,9 +10,9 @@ import { useEffect, useState } from "react"
 import Toast from "react-native-toast-message"
 import { tweetsRepository } from "../../core/services/repositories/tweetsRepository"
 
-const CreateTweetScreen = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+type Props = NativeStackScreenProps<RootStackParamList, 'CreateTweet'>
 
+const CreateTweetScreen = ({ navigation }: Props) => {
     const [tweetContent, setTweetContent] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -42,6 +41,11 @@ const CreateTweetScreen = () => {
             setErrorMessage(result.error.message)
         }
 
+        Toast.show({
+            type: 'success',
+            text1: "Tweet sent!"
+        })
+
         navigation.goBack()
     }
 
@@ -50,7 +54,7 @@ const CreateTweetScreen = () => {
             <View style={styles.actionsContainer}>
                 <CancelButton onPress={() => navigation.goBack()}/>
 
-                <TweetButton onPress={handleSendTweet}/>
+                <TweetButton isDisabled={tweetContent.trim() === ''} onPress={handleSendTweet} />
             </View>
 
             <View>
