@@ -14,6 +14,6 @@ export interface SearchResultsState<T> extends State<T[]> {
 
 export interface ProfileInfoState extends State<UserFull>{}
 
-export interface ProfileFeedState extends State<Tweet[]>{
+export interface TweetsFeedState extends State<Tweet[]>{
     data: Tweet[];
 }

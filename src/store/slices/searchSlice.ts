@@ -1,14 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { searchRepository } from "../../core/services/repositories/searchRepository";
 import { Tweet, TweetFeed } from "../../core/constants/types/Tweet";
 import { User, UserFeed } from "../../core/constants/types/User";
 import { SearchResultsState } from "../../core/constants/types/ResultsState";
+import { tweetsRepository } from "../../core/services/repositories/tweetsRepository";
+import { usersRepository } from "../../core/services/repositories/usersRepository";
 
 type SearchState = {
     hasSearched: boolean;
     query: string;
-    tweetsResults: SearchResultsState<Tweet>;
-    usersResults: SearchResultsState<User>;
+    tweetsResult: SearchResultsState<Tweet>;
+    usersResult: SearchResultsState<User>;
 }
 
 const initialTweetsState: SearchResultsState<Tweet> = {
@@ -28,14 +29,14 @@ const initialUsersState: SearchResultsState<User> = {
 const initialState: SearchState = {
     hasSearched: false,
     query: '',
-    tweetsResults: initialTweetsState,
-    usersResults: initialUsersState
+    tweetsResult: initialTweetsState,
+    usersResult: initialUsersState
 }
 
 export const fetchSearchedTweets = createAsyncThunk<TweetFeed, string, {rejectValue: string}>(
     'search/fetchSearchedTweets',
     async (query, { rejectWithValue }) => {
-        const result = await searchRepository.fetchSearchedTweets(query)
+        const result = await tweetsRepository.fetchSearchedTweets(query)
 
         if (!result.success){
             return rejectWithValue(result.error.message)
@@ -48,7 +49,7 @@ export const fetchSearchedTweets = createAsyncThunk<TweetFeed, string, {rejectVa
 export const fetchSearchedUsers = createAsyncThunk<UserFeed, string, {rejectValue: string}>(
     'search/fetchSearchedUsers',
     async (query, { rejectWithValue }) => {
-        const result = await searchRepository.fetchSearchedUsers(query)
+        const result = await usersRepository.fetchSearchedUsers(query)
 
         if (!result.success){
             return rejectWithValue(result.error.message)
@@ -64,8 +65,8 @@ const searchSlice = createSlice({
     reducers: {
         setQuery: (state, action) => {state.query = action.payload},
         resetSearch: (state) => {
-            state.tweetsResults = initialTweetsState
-            state.usersResults = initialUsersState
+            state.tweetsResult = initialTweetsState
+            state.usersResult = initialUsersState
         },
         clearSearch: () => {
             return initialState;
@@ -76,43 +77,43 @@ const searchSlice = createSlice({
             // Fetch searched tweets
             .addCase(fetchSearchedTweets.pending, (state) => {
                 state.hasSearched = true
-                state.tweetsResults.isLoading = true
-                state.tweetsResults.status = 'active'
-                state.tweetsResults.error = null
+                state.tweetsResult.isLoading = true
+                state.tweetsResult.status = 'active'
+                state.tweetsResult.error = null
             })
             .addCase(fetchSearchedTweets.fulfilled, (state, action) => {
                 state.hasSearched = true
-                state.tweetsResults.isLoading = false
-                state.tweetsResults.data = action.payload.tweets
-                state.tweetsResults.status = 'active'
-                state.tweetsResults.error= null
+                state.tweetsResult.isLoading = false
+                state.tweetsResult.data = action.payload.tweets
+                state.tweetsResult.status = 'active'
+                state.tweetsResult.error= null
             })
             .addCase(fetchSearchedTweets.rejected, (state, action) => {
                 state.hasSearched = true
-                state.tweetsResults.isLoading = false
-                state.tweetsResults.status = 'active'
-                state.tweetsResults.error = action.payload as string
+                state.tweetsResult.isLoading = false
+                state.tweetsResult.status = 'active'
+                state.tweetsResult.error = action.payload as string
             })
 
             // Fetch searched users
             .addCase(fetchSearchedUsers.pending, (state) => {
                 state.hasSearched = true
-                state.usersResults.isLoading = true
-                state.usersResults.status = 'active'
-                state.usersResults.error = null
+                state.usersResult.isLoading = true
+                state.usersResult.status = 'active'
+                state.usersResult.error = null
             })
             .addCase(fetchSearchedUsers.fulfilled, (state, action) => {
                 state.hasSearched = true
-                state.usersResults.isLoading = false
-                state.usersResults.data = action.payload.users
-                state.usersResults.status = 'active'
-                state.usersResults.error = null
+                state.usersResult.isLoading = false
+                state.usersResult.data = action.payload.users
+                state.usersResult.status = 'active'
+                state.usersResult.error = null
             })
             .addCase(fetchSearchedUsers.rejected, (state, action) => {
                 state.hasSearched = true
-                state.usersResults.isLoading = false
-                state.usersResults.status = 'active'
-                state.usersResults.error = action.payload as string
+                state.usersResult.isLoading = false
+                state.usersResult.status = 'active'
+                state.usersResult.error = action.payload as string
             })
     }
 })

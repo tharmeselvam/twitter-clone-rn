@@ -16,7 +16,7 @@ import BackButton from "../components/BackButton"
 
 const SearchScreen = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { query, hasSearched, tweetsResults, usersResults } = useSelector((state: RootState) => state.search)
+    const { query, hasSearched, tweetsResult: tweetsResults, usersResult: usersResults } = useSelector((state: RootState) => state.search)
 
     const layout = useWindowDimensions()
     const [index, setIndex] = useState<number>(0)
