@@ -1,20 +1,18 @@
 import { Result } from "../../constants/types/Result";
 import { TweetFeed } from "../../constants/types/Tweet";
-import { UserFull } from "../../constants/types/User";
 import apiClient from "../api/apiClient";
 import { tweetFeedMapper } from "../mappers/tweetMapper";
-import { mapUserFull } from "../mappers/userMapper";
 
-export const profileRepository = {
-    fetchOwnProfile: async (): Promise<Result<UserFull>> => {
+export const tweetsRepository = {
+    fetchHomeFeed: async (): Promise<Result<TweetFeed>> => {
         try {
-            const response = await apiClient.get('users/me')
+            const response = await apiClient.get('/tweets/following');
 
             if (response.status === 200) {
-                return {
-                    success: true,
-                    data: mapUserFull(response.data)
-                }
+                return { 
+                    success: true, 
+                    data: tweetFeedMapper(response.data) 
+                };
             }
 
             return {
@@ -22,14 +20,14 @@ export const profileRepository = {
                 error: {
                     message: response.data.message
                 }
-            }
-        } catch(error) {
+             };
+        } catch (error) {
             return {
                 success: false,
                 error: {
-                    message: "An error occurred while fetching your profile."
+                    message: "An error occurred while fetching the home feed."
                 }
-            }
+            };
         }
     },
 
@@ -85,5 +83,32 @@ export const profileRepository = {
                 }
             }
         }
-    }
-}
+    },
+
+    fetchSearchedTweets: async (query: string): Promise<Result<TweetFeed>> => {
+        try {
+            const response = await apiClient.get(`search/tweets?key=${query}`)
+
+            if (response.status === 200) {
+                return {
+                    success: true,
+                    data: tweetFeedMapper(response.data)
+                }
+            }
+
+            return {
+                success: false,
+                error: {
+                    message: response.data.message
+                }
+            }
+        } catch(error) {
+            return {
+                success: false,
+                error: {
+                    message: "An error occured while fetching search results."
+                }
+            }
+        }
+    },
+};

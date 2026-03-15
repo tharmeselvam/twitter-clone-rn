@@ -1,19 +1,17 @@
 import { Result } from "../../constants/types/Result";
-import { TweetFeed } from "../../constants/types/Tweet";
-import { UserFeed } from "../../constants/types/User";
+import { UserFeed, UserFull } from "../../constants/types/User";
 import apiClient from "../api/apiClient";
-import { tweetFeedMapper } from "../mappers/tweetMapper";
-import { userFeedMapper } from "../mappers/userMapper";
+import { mapUserFull, userFeedMapper } from "../mappers/userMapper";
 
-export const searchRepository = {
-    fetchSearchedTweets: async (query: string): Promise<Result<TweetFeed>> => {
+export const usersRepository = {
+    fetchOwnProfile: async (): Promise<Result<UserFull>> => {
         try {
-            const response = await apiClient.get(`search/tweets?key=${query}`)
+            const response = await apiClient.get('users/me')
 
             if (response.status === 200) {
                 return {
                     success: true,
-                    data: tweetFeedMapper(response.data)
+                    data: mapUserFull(response.data)
                 }
             }
 
@@ -27,7 +25,7 @@ export const searchRepository = {
             return {
                 success: false,
                 error: {
-                    message: "An error occured while fetching search results."
+                    message: "An error occurred while fetching your profile."
                 }
             }
         }
