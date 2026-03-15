@@ -34,6 +34,7 @@ export interface ApiUserFull extends ApiUser<ApiUserProfileFull> {
 
 interface ApiUserProfile {
     name: string;
+    profileImageUri: string | null;
 }
 
 interface ApiUserProfileWithBio extends ApiUserProfile {
@@ -41,6 +42,5 @@ interface ApiUserProfileWithBio extends ApiUserProfile {
 }
 
 interface ApiUserProfileFull extends ApiUserProfileWithBio {
-    profileImageUri: string | null;
     headerImageUri: string | null;
 }

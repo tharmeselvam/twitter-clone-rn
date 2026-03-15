@@ -8,6 +8,7 @@ const mapTweet = (apiTweet: ApiTweet): Tweet => ({
         id: apiTweet.user.id,
         username: formatUsername(apiTweet.user.username),
         displayName: apiTweet.user.profile.name,
+        profileImageUri: apiTweet.user.profile.profileImageUri,
     },
     content: apiTweet.content,
     createdAt: apiTweet.createdAt,

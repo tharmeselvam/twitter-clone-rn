@@ -8,6 +8,7 @@ const mapUser = (apiUser: ApiUserWithBio): User => ({
     profile: {
         name: apiUser.profile.name,
         bio: apiUser.profile.bio,
+        profileImageUri: apiUser.profile.profileImageUri,
     }
 })
 

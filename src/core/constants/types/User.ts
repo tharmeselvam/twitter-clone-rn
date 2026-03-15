@@ -20,9 +20,9 @@ export interface UserFull extends User {
 interface UserProfile {
     name: string;
     bio: string | null;
+    profileImageUri: string | null;
 }
 
 interface UserProfileFull extends UserProfile {
-    profileImageUri: string | null;
     headerImageUri: string | null;
 }
