@@ -12,8 +12,13 @@ interface ProfileHeaderProps {
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
     return (
         <View style={styles.container} pointerEvents="box-none">
-            <View style={styles.headerPhoto}>
-
+            <View style={styles.headerImageContainer}>
+                {user.profile.headerImageUri &&
+                    <Image
+                        source={{ uri: user.profile.headerImageUri }}
+                        style={styles.headerImage}
+                    />
+                }
             </View>
 
             <ProfileImage style={styles.profileImage} imageUri={user.profile.profileImageUri} />
@@ -61,9 +66,12 @@ const styles = StyleSheet.create({
     container: {
 
     },
-    headerPhoto: {
+    headerImageContainer: {
         height: 140,
         backgroundColor: colors.primary
+    },
+    headerImage: {
+        resizeMode: 'cover',
     },
     profileImage: {
         width: 100,
