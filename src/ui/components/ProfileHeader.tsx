@@ -3,7 +3,7 @@ import { colors } from "../colors"
 import { UserFull } from "../../core/constants/types/User"
 import IconButton from "./IconButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Avatar from "./Avatar";
+import ProfileImage from "./ProfileImage";
 
 interface ProfileHeaderProps {
     user: UserFull;
@@ -16,7 +16,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
 
             </View>
 
-            <Avatar style={styles.avatar} />
+            <ProfileImage style={styles.profileImage} imageUri={user.profile.profileImageUri} />
 
             <View style={styles.optionsContainer}>
                 <IconButton 
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
         height: 140,
         backgroundColor: colors.primary
     },
-    avatar: {
+    profileImage: {
+        width: 100,
         position: 'absolute',
         top: 100,
         left: 16,

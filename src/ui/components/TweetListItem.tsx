@@ -3,18 +3,19 @@ import { Tweet } from "../../core/constants/types/Tweet"
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../colors";
 import formatDate from "../../core/utils/formatDate";
+import ProfileImage from "./ProfileImage";
 
 interface TweetListItemProps {
     tweet: Tweet;
 }
 
-const TweetListItem: React.FC<TweetListItemProps> = ({ tweet }) => {
+const TweetListItem = ({ tweet }: TweetListItemProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.leftContainer}>
-                <Image
-                    source={require('../../assets/user-placeholder.png')}
-                    style={styles.avatar}
+                <ProfileImage
+                    imageUri={tweet.author.profileImageUri}
+                    style={styles.profileImage}
                 />
             </View>
 
@@ -63,11 +64,8 @@ const styles = StyleSheet.create({
         paddingTop: 4,
         width: 45,
     },
-    avatar: {
+    profileImage: {
         width: 45,
-        height: 45,
-        borderRadius: 50,
-        backgroundColor: 'gray',
     },
     rightContainer: {
         flex: 1,
