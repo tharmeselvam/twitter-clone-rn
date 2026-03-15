@@ -1,19 +1,18 @@
 import { FlatList, Text, View } from "react-native"
-import { rootStyles } from "../styles"
 import TweetListItem from "../components/TweetListItem"
 import { AppDispatch, RootState } from "../../store"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
-import { fetchHomeTweets } from "../../store/slices/homeSlice"
+import { fetchHomeFeed } from "../../store/slices/tweetsSlice"
 import ListSeparator from "../components/ListSeparator"
 
 const HomeScreen = () => {
-    const { tweets } = useSelector((state: RootState) => state.home)
+    const { isLoading, data: tweets, error } = useSelector((state: RootState) => state.tweets.homeTweets)
 
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
-        dispatch(fetchHomeTweets());
+        dispatch(fetchHomeFeed());
     }, [])
     
     return (
@@ -26,6 +25,8 @@ const HomeScreen = () => {
                 )}
                 ItemSeparatorComponent={ListSeparator}
             />
+
+            
         </View>
     )
 }

@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit"
 import authReducer from './slices/authSlice'
-import homeReducer from "./slices/homeSlice"
+import tweetsReducer from "./slices/tweetsSlice"
 import searchReducer from "./slices/searchSlice"
-import profileReducer from "./slices/profileSlice"
+import usersReducer from "./slices/usersSlice"
 
 export const store = configureStore({
     reducer: { 
         auth: authReducer,
-        home: homeReducer,
+        tweets: tweetsReducer,
+        users: usersReducer,
         search: searchReducer,
-        profile: profileReducer,
     }
 });
 

@@ -6,20 +6,22 @@ import ProfileTweetFeed from "../components/ProfileTweetFeed"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../store"
 import { useEffect, useRef } from "react"
-import { fetchProfileFeed, fetchProfileInfo } from "../../store/slices/profileSlice"
+import { fetchOwnProfileInfo } from "../../store/slices/usersSlice"
 import { ProfileFeedType } from "../../core/constants/types/ProfileFeedType"
 import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
+import { fetchProfileFeed } from "../../store/slices/tweetsSlice"
 
 const ProfileScreen = () => {
-    const { user, tweets, replies, likedTweets } = useSelector((state: RootState) => state.profile)
+    const { isLoading, data: currentUserData, error } = useSelector((state: RootState) => state.users.currentUser)
+    const { profileTweets, profileReplies, profileLikes } = useSelector((state: RootState) => state.tweets)
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
-        dispatch(fetchProfileInfo())
-        dispatch(fetchProfileFeed('tweets'))
+        dispatch(fetchOwnProfileInfo())
+        dispatch(fetchProfileFeed('profileTweets'))
     }, [dispatch])
 
-    const fetchedTabs = useRef<Set<ProfileFeedType>>(new Set(['tweets']))
+    const fetchedTabs = useRef<Set<ProfileFeedType>>(new Set(['profileTweets']))
 
     const handleTabChange = ({ tabName }: IndexChangeEventData<string>) => {
         if (!fetchedTabs.current.has(tabName as ProfileFeedType)) {
@@ -28,17 +30,17 @@ const ProfileScreen = () => {
         }
     }
 
-    if (!user.data) {
+    if (!currentUserData) {
         //Handle error
         return null
     }
 
-    const userData = user.data
+    const userData = currentUserData
 
     return (
         <View style={rootStyles.screenContainer}>
 
-            {user.data &&
+            {userData &&
                 <Tabs.Container
                     headerContainerStyle={{elevation: 0}}
                     renderHeader={() => <ProfileHeader user={userData} />}
@@ -52,16 +54,16 @@ const ProfileScreen = () => {
                         />
                     )}
                 >
-                    <Tabs.Tab name="tweets" label="Tweets">
-                        <ProfileTweetFeed tweets={tweets.data} />
+                    <Tabs.Tab name="profileTweets" label="Tweets">
+                        <ProfileTweetFeed tweets={profileTweets.data} />
                     </Tabs.Tab>
 
-                    <Tabs.Tab name="replies" label="Replies">
-                        <ProfileTweetFeed tweets={replies.data} />
+                    <Tabs.Tab name="profileReplies" label="Replies">
+                        <ProfileTweetFeed tweets={profileReplies.data} />
                     </Tabs.Tab>
 
-                    <Tabs.Tab name="likedTweets" label="Likes">
-                        <ProfileTweetFeed tweets={likedTweets.data} />
+                    <Tabs.Tab name="profileLikes" label="Likes">
+                        <ProfileTweetFeed tweets={profileLikes.data} />
                     </Tabs.Tab>
                 </Tabs.Container>
             }
