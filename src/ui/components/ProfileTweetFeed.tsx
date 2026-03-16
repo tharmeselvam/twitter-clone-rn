@@ -1,8 +1,7 @@
-import { FlatList, ListRenderItem } from "react-native"
 import TweetListItem from "./TweetListItem"
-import { Tweet } from "../../core/constants/types/Tweet";
-import { Tabs } from "react-native-collapsible-tab-view";
-import { useCallback } from "react";
+import { Tweet } from "../../core/constants/types/Tweet"
+import { Tabs } from "react-native-collapsible-tab-view"
+import ListSeparator from "./ListSeparator"
 
 interface TweetFeedProps {
     tweets: Tweet[];
@@ -16,6 +15,7 @@ const ProfileTweetFeed = ({ tweets }: TweetFeedProps) => {
             renderItem={({item}) => (
                 <TweetListItem tweet={item} />
             )}
+            ItemSeparatorComponent={ListSeparator}
         />
     )
 }

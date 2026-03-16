@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 import { Tweet } from "../../core/constants/types/Tweet"
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../colors";
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
         color: 'gray',
     },
     contentContainer: {
-        flex: 3,
         flexDirection: 'column',
         alignItems: 'flex-start',
         paddingVertical: 6,

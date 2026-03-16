@@ -5,13 +5,13 @@ const ListSeparator = () => {
     return (
         <View style={styles.separator} />
     );
-};
+}
 
 export default ListSeparator;
 
 const styles = StyleSheet.create({
     separator: {
-        height: 1,
+        height: 0.5,
         backgroundColor: colors.gray300,
     },
 }) 

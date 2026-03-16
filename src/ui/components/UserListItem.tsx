@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native"
 import { colors } from "../colors"
 import { User } from "../../core/constants/types/User";
-import Button from "./Button";
+import LogInButton from "./LogInButton";
 import SmallFollowButton from "./SmallFollowButton";
 import ProfileImage from "./ProfileImage";
 

@@ -7,10 +7,16 @@ export const rootStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.white,
     },
+    buttonPressed: {
+        opacity: 0.8,
+    },
+    buttonDisabled: {
+        opacity: 0.5,
+    },
     tabBar: {
         backgroundColor: 'transparent',
         elevation: 0,
-        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomWidth: 0.5,
         borderBottomColor: colors.gray300,
         marginHorizontal: 0
     },

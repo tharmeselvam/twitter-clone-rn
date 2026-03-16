@@ -59,7 +59,8 @@ const MainTabs = ({ navigation }: Props) => {
                                 style={styles.headerLogo}
                                 resizeMode="contain"
                             />
-                        )
+                        ),
+                        headerStyle: styles.header
                     }}
                 />
                 <Tab.Screen name="Search" component={SearchScreen} />
@@ -110,6 +111,11 @@ const styles = StyleSheet.create({
     headerLogo: {
         width: 30,
         height: 30,
+    },
+    header: {
+        elevation: 0,
+        borderBottomColor: colors.gray300,
+        borderBottomWidth: 1,
     },
     fab: {
         position: 'absolute',
