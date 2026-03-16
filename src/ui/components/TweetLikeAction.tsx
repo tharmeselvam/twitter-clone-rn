@@ -16,7 +16,7 @@ const TweetLikeAction = ({ isLiked, countValue, onPress }: TweetLikeActionProps)
             <Pressable
                 onPress={onPress}
                 style={({ pressed }) => [
-                    pressed && rootStyles.pressed
+                    pressed && rootStyles.buttonPressed
                 ]}
             >
                 {isLiked

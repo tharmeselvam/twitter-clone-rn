@@ -41,9 +41,6 @@ export const rootStyles = StyleSheet.create({
     tweetActionCountValue: {
         fontSize: 14,
     },
-    pressed: {
-        opacity: 0.8,
-    },
 })
 
 export const tabBarStyleProps = {

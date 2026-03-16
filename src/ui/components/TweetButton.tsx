@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text } from "react-native"
 import { colors } from "../colors";
+import { rootStyles } from "../styles";
 
 interface TweetButtonProps {
     isDisabled: boolean;
@@ -11,8 +12,8 @@ const TweetButton = ({ onPress, isDisabled }: TweetButtonProps) => {
         <Pressable
             style={({ pressed }) => [
                 styles.button,
-                pressed && styles.pressed,
-                isDisabled && styles.disabled
+                pressed && rootStyles.buttonPressed,
+                isDisabled && rootStyles.buttonDisabled
             ]}
             disabled={isDisabled}
             onPress={onPress}
@@ -31,15 +32,9 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 16,
     },
-    pressed: {
-        opacity: 0.8,
-    },
-    disabled: {
-        opacity: 0.5,
-    },
     label: {
         color: colors.white,
         fontWeight: 'bold',
         fontSize: 16,
-    }
+    },
 })

@@ -13,7 +13,7 @@ const TweetReplyAction = ({ countValue, onPress }: TweetReplyActionProps) => {
             <Pressable
                 onPress={onPress}
                 style={({ pressed }) => [
-                    pressed && rootStyles.pressed
+                    pressed && rootStyles.buttonPressed
                 ]}
             >
                 <Ionicons name="chatbubble-outline" size={18} style={rootStyles.tweetActionDefault} />

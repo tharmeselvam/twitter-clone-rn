@@ -13,7 +13,7 @@ const TweetRetweetAction = ({ countValue, onPress }: TweetRetweetActionProps) =>
             <Pressable
                 onPress={onPress}
                 style={({ pressed }) => [
-                    pressed && rootStyles.pressed
+                    pressed && rootStyles.buttonPressed
                 ]}
             >
                 <Ionicons name="repeat-outline" size={18} style={rootStyles.tweetActionDefault} />

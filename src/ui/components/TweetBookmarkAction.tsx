@@ -13,7 +13,7 @@ const TweetBookmarkAction = ({ countValue, onPress }: TweetBookmarkActionProps) 
             <Pressable
                 onPress={onPress}
                 style={({ pressed }) => [
-                    pressed && rootStyles.pressed
+                    pressed && rootStyles.buttonPressed
                 ]}
             >
                 <Ionicons name="bookmark-outline" size={18} style={rootStyles.tweetActionDefault} />
