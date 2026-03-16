@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text } from "react-native"
+import { rootStyles } from "../styles"
 
 interface CancelButtonProps {
     onPress: () => void
@@ -8,6 +9,9 @@ const CancelButton = ({ onPress }: CancelButtonProps) => {
     return (
         <Pressable
             onPress={onPress}
+            style={({ pressed }) => [
+                pressed && rootStyles.buttonPressed,
+            ]}
         >
             <Text style={styles.text}>Cancel</Text>
         </Pressable>

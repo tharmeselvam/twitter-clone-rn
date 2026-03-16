@@ -11,10 +11,10 @@ interface ButtonProps {
 const LogInButton = ({ isLoading, isDisabled, onPress }: ButtonProps) => {
     return (
         <Pressable 
-            style={({ pressed }) => ([
+            style={({ pressed }) => [
                 styles.button,
                 pressed && rootStyles.buttonPressed,
-            ])} 
+            ]} 
             onPress={onPress}
             disabled={isDisabled}
         >
