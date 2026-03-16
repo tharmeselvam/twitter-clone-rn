@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
         paddingVertical: 14,
         paddingHorizontal: 20, 
         fontSize: 15, 
-        margin: 10 
+        //margin: 10 
     },
 })

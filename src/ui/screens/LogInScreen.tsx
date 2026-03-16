@@ -6,8 +6,9 @@ import { logIn } from "../../store/slices/authSlice";
 import Toast from "react-native-toast-message";
 import AuthTextField from "../components/AuthTextField";
 import { rootStyles } from "../styles";
-import Button from "../components/Button";
+import LogInButton from "../components/LogInButton";
 import { colors } from "../colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const LogInScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -36,25 +37,28 @@ const LogInScreen = () => {
             setValidationErrorMessage("Password cannot be empty.");
             return false;
         }
-        setValidationErrorMessage(null); 
+        setValidationErrorMessage(null);
         return true;
     };
 
     const handleLogIn = () => {
         if (!validateForm()) return;
-    
+
         dispatch(logIn({ email, password }));
     };
 
     return (
-        <View style={rootStyles.screenContainer}>
+        <SafeAreaView style={[rootStyles.screenContainer, styles.container]}>
             <View style={styles.headerContainer}>
                 <Image
                     source={require('../../assets/twitter-logo.png')}
                     style={styles.logo}
                     resizeMode="contain"
                 />
-                <Text style={styles.title}>See what's happening in the world right now.</Text>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>See what's happening in the world right now.</Text>
+                </View>
+
             </View>
 
             <View style={styles.formContainer}>
@@ -73,46 +77,56 @@ const LogInScreen = () => {
                     />
                 </View>
 
-                <Button
-                    title={isLoading ? "Logging in..." : "Log In"}
+                <LogInButton
+                    isLoading={isLoading}
                     isDisabled={isLoading}
-                    backgroundColor={colors.primary}
                     onPress={handleLogIn}
                 />
             </View>
 
-        </View>
+        </SafeAreaView>
     );
 }
 
 export default LogInScreen;
 
 const styles = StyleSheet.create({
+    container: {
+        padding: 26,
+        gap: 20,
+    },
     headerContainer: {
-        flex: 1.5,
+        flex: 1.3,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-    },
-    title: {
-        fontSize: 40,
-        fontWeight: 'bold',
-        marginTop: 50,
-        marginHorizontal: 10,
+        //backgroundColor: 'blue'
     },
     logo: {
         width: 60,
         height: 60,
         alignSelf: 'center',
-        margin: 40,
+        //backgroundColor: 'red'
+    },
+    titleContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        //backgroundColor: 'gray'
+    },
+    title: {
+        fontSize: 40,
+        fontWeight: 'bold',
     },
     formContainer: {
+        //backgroundColor: 'red',
         flex: 1,
         justifyContent: 'space-between',
         width: '100%',
-        marginBottom: 50,
+        gap: 50,
+        paddingBottom: 50,
     },
     formFieldsContainer: {
         marginBottom: 40,
+        gap: 20,
     }
 })
