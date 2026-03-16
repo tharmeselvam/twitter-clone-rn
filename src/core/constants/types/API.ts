@@ -1,6 +1,9 @@
 export interface ApiTweet {
     id: number;
     user: ApiUser;
+    replyCount: number;
+    likeCount: number;
+    isLiked: boolean;
     content: string;
     createdAt: string;
 }

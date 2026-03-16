@@ -6,6 +6,9 @@ export interface Tweet {
         displayName: string;
         profileImageUri: string | null;
     };
+    replyCount: number;
+    likeCount: number;
+    isLiked: boolean;
     content: string;
     createdAt: string;
 }
