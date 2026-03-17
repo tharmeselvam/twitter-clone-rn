@@ -70,7 +70,7 @@ const SearchScreen = () => {
     )
 
     return (
-        <SafeAreaView style={rootStyles.screenContainer}>
+        <SafeAreaView style={rootStyles.screenContainer} edges={['top']}>
             <View style={[styles.header, !hasSearched ? {paddingLeft: 16} : null]}>
                 {hasSearched &&
                     <BackButton onPress={() => {dispatch(clearSearch())}} />
@@ -108,7 +108,4 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         paddingRight: 16,
     },
-    
-    
-    
 })
