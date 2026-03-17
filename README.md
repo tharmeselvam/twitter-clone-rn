@@ -1,97 +1,108 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🐦 Twitter Clone — React Native
 
-# Getting Started
+A mobile Twitter clone built with **React Native** and **TypeScript**, backed by a custom **NestJS** REST API. The app covers core Twitter functionality including authentication, a home feed, tweet creation, search, and user profiles.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+> ⚠️ **Work in progress** — core features are implemented; some areas are still under development.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## ✨ Features
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **Authentication** — Sign up and log in with JWT-based auth
+- **Home Feed** — Browse tweets from users you follow
+- **Create Tweets** — Compose and post new tweets
+- **Search** — Discover users and content
+- **User Profile** — View profile details and tweet history
+- **State Management** — Powered by Redux for predictable global state
 
-```sh
-# Using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
+## 📱 UI Screenshots
+
+<img width="1190" height="730" alt="UI Screenshots" src="https://github.com/user-attachments/assets/da1a7cf8-b480-4e87-bdb3-a14b7509003e" />
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Mobile Framework | React Native (TypeScript) |
+| State Management | Redux |
+| Navigation | React Navigation |
+| Backend | NestJS (separate repository) |
+| Language | TypeScript |
+
+---
+
+## 📁 Project Structure
+
+```
+twitter-clone-rn/
+├── __tests__/            # Test files
+├── android/              # Android native project
+├── ios/                  # iOS native project
+└── src/                  # Application source code
+    ├── app/              # App entry point and root navigation setup
+    ├── assets/           # Static image assets
+    ├── core/             # Shared constants, types, utility functions, and API service layer
+    ├── store/            # Redux store, slices, and actions
+    └── ui/               # App screens and resusable UI components
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## 🚀 Getting Started
 
-### Android
+### Prerequisites
 
-```sh
-# Using npm
-npm run android
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- [React Native environment](https://reactnative.dev/docs/set-up-your-environment) set up for Android
+- The [twitter-clone NestJS backend](https://github.com/tharmeselvam/twitter-clone-nestjs) running locally
 
-# OR using Yarn
-yarn android
-```
+### Installation
 
-### iOS
+```bash
+# Clone the repository
+git clone https://github.com/tharmeselvam/twitter-clone-rn.git
+cd twitter-clone-rn
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+# Install dependencies
+npm install
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
+# iOS only — install CocoaPods dependencies
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### Running the App
 
-```sh
-# Using npm
-npm run ios
+**Start the Metro bundler:**
 
-# OR using Yarn
-yarn ios
+```bash
+npm start
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+**Run on Android:**
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```bash
+npm run android
+```
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
+## 📱 Screens
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+| Screen | Description |
+|---|---|
+| Login / Register | User authentication |
+| Home | Tweet feed |
+| Create Tweet | Compose a new tweet |
+| Search | Search for users and tweets |
+| Profile | View user profile and their tweets |
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+---
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 🔗 Related
 
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- **Backend repository:** [tharmeselvam/twitter-clone-nestjs](https://github.com/tharmeselvam/twitter-clone-nestjs)
