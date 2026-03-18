@@ -1,5 +1,4 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
-import IconButton from "./IconButton"
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../colors";
 import { rootStyles } from "../styles";
@@ -15,9 +14,6 @@ const TweetLikeAction = ({ isLiked, countValue, onPress }: TweetLikeActionProps)
         <View style={rootStyles.tweetActionContainer}>
             <Pressable
                 onPress={onPress}
-                style={({ pressed }) => [
-                    pressed && rootStyles.buttonPressed
-                ]}
             >
                 {isLiked
                     ? <Ionicons name="heart" size={20} style={styles.isLiked} />

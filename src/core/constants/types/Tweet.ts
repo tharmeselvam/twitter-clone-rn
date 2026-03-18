@@ -19,3 +19,9 @@ export interface TweetFeed {
     total: number;
     tweets: Tweet[];
 }
+
+export interface TweetLike {
+    tweetId: number;
+    isLiked: boolean;
+    likeCount: number;
+}

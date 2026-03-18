@@ -1,5 +1,5 @@
 import { Result } from "../../constants/types/Result";
-import { TweetFeed } from "../../constants/types/Tweet";
+import { TweetFeed, TweetLike } from "../../constants/types/Tweet";
 import apiClient from "../api/apiClient";
 import { tweetFeedMapper } from "../mappers/tweetMapper";
 
@@ -135,6 +135,33 @@ export const tweetsRepository = {
                 success: false,
                 error: {
                     message: "Failed to send tweet."
+                }
+            }
+        }
+    },
+
+    toggleTweetLike: async (tweetId: number): Promise<Result<TweetLike>> => {
+        try {
+            const response = await apiClient.post(`tweets/${tweetId}/like`)
+
+            if (response.status === 201) {
+                return {
+                    success: true,
+                    data: response.data
+                }
+            }
+
+            return {
+                success: false,
+                error: {
+                    message: response.data.message
+                }
+            }
+        } catch(error) {
+            return {
+                success: false,
+                error: {
+                    message: "Something went wrong."
                 }
             }
         }

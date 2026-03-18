@@ -71,12 +71,15 @@ export const fetchProfileFeed = createAsyncThunk<FetchProfileFeedSuccess, Profil
     }
 )
 
-export const toggleLikeTweet = createAsyncThunk<TweetLike, number, { rejectValue: string }>(
+export const toggleTweetLike = createAsyncThunk<TweetLike, number, { rejectValue: string }>(
     'tweets/toggleTweetLike',
-    async (tweetId, { rejectWithValue }) => {
-        const result = await tweetsRepository.toggleLikeTweet(tweetId)
+    async (tweetId, { dispatch, rejectWithValue }) => {
+        dispatch(toggleTweetLikeLocal(tweetId))
+
+        const result = await tweetsRepository.toggleTweetLike(tweetId)
 
         if (!result.success) {
+            dispatch(toggleTweetLikeLocal(tweetId))
             return rejectWithValue(result.error.message)
         }
 
@@ -87,7 +90,15 @@ export const toggleLikeTweet = createAsyncThunk<TweetLike, number, { rejectValue
 const tweetsSlice = createSlice({
     name: 'tweets',
     initialState: initialTweetsState,
-    reducers: {},
+    reducers: {
+        toggleTweetLikeLocal: (state, action) => {
+            const tweet = state.byId[action.payload]
+            if (!tweet) return
+
+            tweet.isLiked = !tweet.isLiked
+            tweet.likeCount += tweet.isLiked ? 1 : -1
+        }
+    },
     extraReducers: (builder) => {
         builder
             // Home Feed
@@ -134,6 +145,14 @@ const tweetsSlice = createSlice({
                     state.byId[tweet.id] = tweet
                 })
             })
+
+            // Toggle Tweet Like
+            .addCase(toggleTweetLike.fulfilled, (state, action) => {
+                const tweet = state.byId[action.payload.tweetId]
+                
+                tweet.isLiked = action.payload.isLiked
+                tweet.likeCount = action.payload.likeCount
+            })
     }
 });
 
@@ -153,4 +172,5 @@ export const selectProfileLikesFeed = (state: RootState) => {
     return state.tweets.profileLikesFeed.tweetIds.map(id => state.tweets.byId[id])
 }
 
+export const { toggleTweetLikeLocal } = tweetsSlice.actions
 export default tweetsSlice.reducer;
