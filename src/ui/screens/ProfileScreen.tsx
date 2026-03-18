@@ -9,19 +9,21 @@ import { useEffect, useRef } from "react"
 import { fetchOwnProfileInfo } from "../../store/slices/usersSlice"
 import { ProfileFeedType } from "../../core/constants/types/ProfileFeedType"
 import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
-import { fetchProfileFeed } from "../../store/slices/tweetsSlice"
+import { fetchProfileFeed, selectProfileLikesFeed, selectProfileRepliesFeed, selectProfileTweetsFeed } from "../../store/slices/tweetsSlice"
 
 const ProfileScreen = () => {
     const { isLoading, data: currentUserData, error } = useSelector((state: RootState) => state.users.currentUser)
-    const { profileTweets, profileReplies, profileLikes } = useSelector((state: RootState) => state.tweets)
+    const profileTweets = useSelector(selectProfileTweetsFeed)
+    const profileReplies = useSelector(selectProfileRepliesFeed)
+    const profileLikes = useSelector(selectProfileLikesFeed)
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
         dispatch(fetchOwnProfileInfo())
-        dispatch(fetchProfileFeed('profileTweets'))
+        dispatch(fetchProfileFeed('profileTweetsFeed'))
     }, [dispatch])
 
-    const fetchedTabs = useRef<Set<ProfileFeedType>>(new Set(['profileTweets']))
+    const fetchedTabs = useRef<Set<ProfileFeedType>>(new Set(['profileTweetsFeed']))
 
     const handleTabChange = ({ tabName }: IndexChangeEventData<string>) => {
         if (!fetchedTabs.current.has(tabName as ProfileFeedType)) {
@@ -54,16 +56,16 @@ const ProfileScreen = () => {
                         />
                     )}
                 >
-                    <Tabs.Tab name="profileTweets" label="Tweets">
-                        <ProfileTweetFeed tweets={profileTweets.data} />
+                    <Tabs.Tab name="profileTweetsFeed" label="Tweets">
+                        <ProfileTweetFeed tweets={profileTweets} />
                     </Tabs.Tab>
 
-                    <Tabs.Tab name="profileReplies" label="Replies">
-                        <ProfileTweetFeed tweets={profileReplies.data} />
+                    <Tabs.Tab name="profileRepliesFeed" label="Replies">
+                        <ProfileTweetFeed tweets={profileReplies} />
                     </Tabs.Tab>
 
-                    <Tabs.Tab name="profileLikes" label="Likes">
-                        <ProfileTweetFeed tweets={profileLikes.data} />
+                    <Tabs.Tab name="profileLikesFeed" label="Likes">
+                        <ProfileTweetFeed tweets={profileLikes} />
                     </Tabs.Tab>
                 </Tabs.Container>
             }

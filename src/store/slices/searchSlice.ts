@@ -4,24 +4,18 @@ import { User, UserFeed } from "../../core/constants/types/User";
 import { SearchResultsState } from "../../core/constants/types/ResultsState";
 import { tweetsRepository } from "../../core/services/repositories/tweetsRepository";
 import { usersRepository } from "../../core/services/repositories/usersRepository";
+import { RootState } from "..";
 
 type SearchState = {
     hasSearched: boolean;
     query: string;
-    tweetsResult: SearchResultsState<Tweet>;
-    usersResult: SearchResultsState<User>;
+    tweetsResult: SearchResultsState;
+    usersResult: SearchResultsState;
 }
 
-const initialTweetsState: SearchResultsState<Tweet> = {
+const initialResultsState: SearchResultsState = {
     isLoading: false,
-    data: [],
-    status: 'inactive',
-    error: null,
-}
-
-const initialUsersState: SearchResultsState<User> = {
-    isLoading: false,
-    data: [],
+    ids: [],
     status: 'inactive',
     error: null,
 }
@@ -29,11 +23,11 @@ const initialUsersState: SearchResultsState<User> = {
 const initialState: SearchState = {
     hasSearched: false,
     query: '',
-    tweetsResult: initialTweetsState,
-    usersResult: initialUsersState
+    tweetsResult: initialResultsState,
+    usersResult: initialResultsState,
 }
 
-export const fetchSearchedTweets = createAsyncThunk<TweetFeed, string, {rejectValue: string}>(
+export const fetchSearchedTweets = createAsyncThunk<TweetFeed, string, { rejectValue: string }>(
     'search/fetchSearchedTweets',
     async (query, { rejectWithValue }) => {
         const result = await tweetsRepository.fetchSearchedTweets(query)
@@ -65,8 +59,8 @@ const searchSlice = createSlice({
     reducers: {
         setQuery: (state, action) => {state.query = action.payload},
         resetSearch: (state) => {
-            state.tweetsResult = initialTweetsState
-            state.usersResult = initialUsersState
+            state.tweetsResult = initialResultsState
+            state.usersResult = initialResultsState
         },
         clearSearch: () => {
             return initialState;
@@ -84,7 +78,7 @@ const searchSlice = createSlice({
             .addCase(fetchSearchedTweets.fulfilled, (state, action) => {
                 state.hasSearched = true
                 state.tweetsResult.isLoading = false
-                state.tweetsResult.data = action.payload.tweets
+                state.tweetsResult.ids = action.payload.tweets.map(tweet => tweet.id)
                 state.tweetsResult.status = 'active'
                 state.tweetsResult.error= null
             })
@@ -105,7 +99,7 @@ const searchSlice = createSlice({
             .addCase(fetchSearchedUsers.fulfilled, (state, action) => {
                 state.hasSearched = true
                 state.usersResult.isLoading = false
-                state.usersResult.data = action.payload.users
+                state.usersResult.ids = action.payload.users.map(user => user.id)
                 state.usersResult.status = 'active'
                 state.usersResult.error = null
             })
@@ -117,6 +111,14 @@ const searchSlice = createSlice({
             })
     }
 })
+
+export const selectSearchedTweets = (state: RootState) => {
+    return state.search.tweetsResult.ids.map(id => state.tweets.byId[id])
+}
+
+export const selectSearchedUsers = (state: RootState) => {
+    return state.search.usersResult.ids.map(id => state.users.byId[id])
+}
 
 export const { setQuery, resetSearch, clearSearch } = searchSlice.actions
 export default searchSlice.reducer

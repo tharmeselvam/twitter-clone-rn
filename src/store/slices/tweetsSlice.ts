@@ -1,14 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { TweetFeed } from "../../core/constants/types/Tweet";
+import { Tweet, TweetFeed, TweetLike } from "../../core/constants/types/Tweet";
 import { tweetsRepository } from "../../core/services/repositories/tweetsRepository";
 import { TweetsFeedState } from "../../core/constants/types/ResultsState";
 import { ProfileFeedType } from "../../core/constants/types/ProfileFeedType";
+import { RootState } from "..";
+import { fetchSearchedTweets } from "./searchSlice";
 
 type TweetsState = {
-    homeTweets: TweetsFeedState;
-    profileTweets: TweetsFeedState;
-    profileReplies: TweetsFeedState;
-    profileLikes: TweetsFeedState;
+    byId: Record<number, Tweet>;
+    homeFeed: TweetsFeedState;
+    profileTweetsFeed: TweetsFeedState;
+    profileRepliesFeed: TweetsFeedState;
+    profileLikesFeed: TweetsFeedState;
 }
 
 interface FetchProfileFeedSuccess {
@@ -18,15 +21,16 @@ interface FetchProfileFeedSuccess {
 
 const initialTweetsFeedState: TweetsFeedState = {
     isLoading: false,
-    data: [],
+    tweetIds: [],
     error: null,
 }
 
 const initialTweetsState: TweetsState = {
-    homeTweets: initialTweetsFeedState,
-    profileTweets: initialTweetsFeedState,
-    profileReplies: initialTweetsFeedState,
-    profileLikes: initialTweetsFeedState,
+    byId: {},
+    homeFeed: initialTweetsFeedState,
+    profileTweetsFeed: initialTweetsFeedState,
+    profileRepliesFeed: initialTweetsFeedState,
+    profileLikesFeed: initialTweetsFeedState,
 }
 
 export const fetchHomeFeed = createAsyncThunk<TweetFeed, void, { rejectValue: string }>(
@@ -44,17 +48,17 @@ export const fetchHomeFeed = createAsyncThunk<TweetFeed, void, { rejectValue: st
 
 export const fetchProfileFeed = createAsyncThunk<FetchProfileFeedSuccess, ProfileFeedType, { rejectValue: string }>(
     'tweets/fetchProfileFeed',
-    async(feedType, { rejectWithValue }) => {
+    async (feedType, { rejectWithValue }) => {
 
         let result
         switch (feedType) {
-            case 'profileTweets':
+            case 'profileTweetsFeed':
                 result = await tweetsRepository.fetchOwnTweets(false)
                 break
-            case 'profileReplies':
+            case 'profileRepliesFeed':
                 result = await tweetsRepository.fetchOwnTweets(true)
                 break
-            case 'profileLikes':
+            case 'profileLikesFeed':
                 result = await tweetsRepository.fetchLikedTweets()
                 break
         }
@@ -67,6 +71,19 @@ export const fetchProfileFeed = createAsyncThunk<FetchProfileFeedSuccess, Profil
     }
 )
 
+export const toggleLikeTweet = createAsyncThunk<TweetLike, number, { rejectValue: string }>(
+    'tweets/toggleTweetLike',
+    async (tweetId, { rejectWithValue }) => {
+        const result = await tweetsRepository.toggleLikeTweet(tweetId)
+
+        if (!result.success) {
+            return rejectWithValue(result.error.message)
+        }
+
+        return result.data as TweetLike
+    }
+)
+
 const tweetsSlice = createSlice({
     name: 'tweets',
     initialState: initialTweetsState,
@@ -75,16 +92,19 @@ const tweetsSlice = createSlice({
         builder
             // Home Feed
             .addCase(fetchHomeFeed.pending, (state) => {
-                state.homeTweets.isLoading = true;
-                state.homeTweets.error = null;
+                state.homeFeed.isLoading = true;
+                state.homeFeed.error = null;
             })
             .addCase(fetchHomeFeed.fulfilled, (state, action) => {
-                state.homeTweets.isLoading = false;
-                state.homeTweets.data = action.payload.tweets;
+                action.payload.tweets.forEach(tweet => {
+                    state.byId[tweet.id] = tweet
+                })
+                state.homeFeed.isLoading = false;
+                state.homeFeed.tweetIds = action.payload.tweets.map(tweet => tweet.id);
             })
             .addCase(fetchHomeFeed.rejected, (state, action) => {
-                state.homeTweets.isLoading = false;
-                state.homeTweets.error = action.payload as string;
+                state.homeFeed.isLoading = false;
+                state.homeFeed.error = action.payload as string;
             })
 
             // Profile Feed
@@ -95,8 +115,11 @@ const tweetsSlice = createSlice({
             })
             .addCase(fetchProfileFeed.fulfilled, (state, action) => {
                 const { feedType, feedData } = action.payload
+                feedData.tweets.forEach(tweet => {
+                    state.byId[tweet.id] = tweet
+                })
                 state[feedType].isLoading = false
-                state[feedType].data = feedData.tweets
+                state[feedType].tweetIds = feedData.tweets.map(tweet => tweet.id)
                 state[feedType].error = null
             })
             .addCase(fetchProfileFeed.rejected, (state, action) => {
@@ -104,7 +127,30 @@ const tweetsSlice = createSlice({
                 state[feedType].isLoading = false
                 state[feedType].error = action.payload as string
             })
+
+            // Fetch searched tweets
+            .addCase(fetchSearchedTweets.fulfilled, (state, action) => {
+                action.payload.tweets.forEach(tweet => {
+                    state.byId[tweet.id] = tweet
+                })
+            })
     }
 });
+
+export const selectHomeFeed = (state: RootState) => {
+    return state.tweets.homeFeed.tweetIds.map(id => state.tweets.byId[id])
+}
+
+export const selectProfileTweetsFeed = (state: RootState) => {
+    return state.tweets.profileTweetsFeed.tweetIds.map(id => state.tweets.byId[id])
+}
+
+export const selectProfileRepliesFeed = (state: RootState) => {
+    return state.tweets.profileRepliesFeed.tweetIds.map(id => state.tweets.byId[id])
+}
+
+export const selectProfileLikesFeed = (state: RootState) => {
+    return state.tweets.profileLikesFeed.tweetIds.map(id => state.tweets.byId[id])
+}
 
 export default tweetsSlice.reducer;
