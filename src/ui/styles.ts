@@ -28,7 +28,19 @@ export const rootStyles = StyleSheet.create({
     tabBarLabel: {
         fontSize: 16,
         fontWeight: 'bold'
-    }
+    },
+    tweetActionContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: 65,
+        gap: 4,
+    },
+    tweetActionDefault: {
+        color: colors.gray600
+    },
+    tweetActionCountValue: {
+        fontSize: 14,
+    },
 })
 
 export const tabBarStyleProps = {

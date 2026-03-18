@@ -10,6 +10,9 @@ const mapTweet = (apiTweet: ApiTweet): Tweet => ({
         displayName: apiTweet.user.profile.name,
         profileImageUri: apiTweet.user.profile.profileImageUri,
     },
+    replyCount: apiTweet.replyCount,
+    likeCount: apiTweet.likeCount,
+    isLiked: apiTweet.isLiked,
     content: apiTweet.content,
     createdAt: apiTweet.createdAt,
 })

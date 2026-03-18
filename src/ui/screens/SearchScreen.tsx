@@ -4,11 +4,10 @@ import SearchBar from "../components/SearchBar"
 import { NavigationState, SceneRendererProps, TabBar, TabView } from "react-native-tab-view"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../store"
-import { clearSearch, fetchSearchedTweets, fetchSearchedUsers, resetSearch, setQuery } from "../../store/slices/searchSlice"
+import { clearSearch, fetchSearchedTweets, fetchSearchedUsers, resetSearch, selectSearchedTweets, selectSearchedUsers, setQuery } from "../../store/slices/searchSlice"
 import { StyleSheet, useWindowDimensions, View } from "react-native"
 import { useState } from "react"
 import { TabRoute } from "../../core/constants/types/SearchTabRoute"
-import { colors } from "../colors"
 import SearchTweetsResults from "../components/SearchTweetsResults"
 import SearchUsersResults from "../components/SearchUsersResults"
 import BackButton from "../components/BackButton"
@@ -16,7 +15,9 @@ import BackButton from "../components/BackButton"
 
 const SearchScreen = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { query, hasSearched, tweetsResult: tweetsResults, usersResult: usersResults } = useSelector((state: RootState) => state.search)
+    const { query, hasSearched, tweetsResult, usersResult } = useSelector((state: RootState) => state.search)
+    const searchedTweets = useSelector(selectSearchedTweets)
+    const searchedUsers = useSelector(selectSearchedUsers)
 
     const layout = useWindowDimensions()
     const [index, setIndex] = useState<number>(0)
@@ -35,9 +36,9 @@ const SearchScreen = () => {
     const handleTabSwitch = (index: number) => {
         setIndex(index)
 
-        if (index === 0 && tweetsResults.status === 'inactive') {
+        if (index === 0 && tweetsResult.status === 'inactive') {
             dispatch(fetchSearchedTweets(query))
-        } else if (index === 1 && usersResults.status === 'inactive') {
+        } else if (index === 1 && usersResult.status === 'inactive') {
             dispatch(fetchSearchedUsers(query))
         }
     }
@@ -50,10 +51,10 @@ const SearchScreen = () => {
     const renderScene = ({ route }: SceneRendererProps & { route: TabRoute }) => {
         switch (route.key) {
             case 'tweets':
-                return <SearchTweetsResults tweets={tweetsResults.data} />
+                return <SearchTweetsResults tweets={searchedTweets} />
 
             case 'people':
-                return <SearchUsersResults users={usersResults.data} />
+                return <SearchUsersResults users={searchedUsers} />
         }
     }
 
@@ -70,7 +71,7 @@ const SearchScreen = () => {
     )
 
     return (
-        <SafeAreaView style={rootStyles.screenContainer}>
+        <SafeAreaView style={rootStyles.screenContainer} edges={['top']}>
             <View style={[styles.header, !hasSearched ? {paddingLeft: 16} : null]}>
                 {hasSearched &&
                     <BackButton onPress={() => {dispatch(clearSearch())}} />
@@ -108,7 +109,4 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         paddingRight: 16,
     },
-    
-    
-    
 })

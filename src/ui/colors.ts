@@ -1,6 +1,7 @@
 export const colors = {
     // Semantic Colors
     primary: '#1DA1F2',
+    like: '#E0245E',
 
     // Neutral Colors
     white: '#FFFFFF',

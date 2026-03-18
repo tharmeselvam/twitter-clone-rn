@@ -8,15 +8,13 @@ interface SearchUsersResultsProps {
 
 const SearchUsersResults = ({ users }: SearchUsersResultsProps) => {
     return (
-        <View>
-            <FlatList
-                data={users}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <UserListItem user={item}/>
-                )}
-            />
-        </View>
+        <FlatList
+            data={users}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+                <UserListItem user={item} />
+            )}
+        />
     )
 }
 

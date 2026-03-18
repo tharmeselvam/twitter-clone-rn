@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     header: {
         elevation: 0,
         borderBottomColor: colors.gray300,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
     },
     fab: {
         position: 'absolute',

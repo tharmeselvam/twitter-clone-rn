@@ -71,6 +71,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary
     },
     headerImage: {
+        width: '100%',
+        height: '100%',
         resizeMode: 'cover',
     },
     profileImage: {

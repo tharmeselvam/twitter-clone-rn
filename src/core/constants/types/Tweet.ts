@@ -6,6 +6,9 @@ export interface Tweet {
         displayName: string;
         profileImageUri: string | null;
     };
+    replyCount: number;
+    likeCount: number;
+    isLiked: boolean;
     content: string;
     createdAt: string;
 }
@@ -15,4 +18,10 @@ export interface TweetFeed {
     limit: number;
     total: number;
     tweets: Tweet[];
+}
+
+export interface TweetLike {
+    tweetId: number;
+    isLiked: boolean;
+    likeCount: number;
 }

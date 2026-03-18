@@ -1,15 +1,23 @@
 import { StyleSheet, Text, View } from "react-native"
 import { Tweet } from "../../core/constants/types/Tweet"
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../colors";
 import formatDate from "../../core/utils/formatDate";
 import ProfileImage from "./ProfileImage";
+import TweetLikeAction from "./TweetLikeAction";
+import TweetReplyAction from "./TweetReplyAction";
+import TweetRetweetAction from "./TweetRetweetAction";
+import TweetBookmarkAction from "./TweetBookmarkAction";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { toggleTweetLike } from "../../store/slices/tweetsSlice";
 
 interface TweetListItemProps {
     tweet: Tweet;
 }
 
 const TweetListItem = ({ tweet }: TweetListItemProps) => {
+    const dispatch = useDispatch<AppDispatch>()
+
     return (
         <View style={styles.container}>
             <View style={styles.leftContainer}>
@@ -38,10 +46,12 @@ const TweetListItem = ({ tweet }: TweetListItemProps) => {
                 </View>
 
                 <View style={styles.actionsContainer}>
-                    <Ionicons name="chatbubble-outline" size={20} color="gray" />
-                    <Ionicons name="repeat-outline" size={20} color="gray" />
-                    <Ionicons name="heart-outline" size={20} color="gray" />
-                    <Ionicons name="bookmark-outline" size={20} color="gray" />
+                    <TweetReplyAction countValue={tweet.replyCount} onPress={() => {}}/>
+                    <TweetRetweetAction countValue={0} onPress={() => {}} />
+                    <TweetLikeAction isLiked={tweet.isLiked} countValue={tweet.likeCount} onPress={
+                        () => dispatch(toggleTweetLike(tweet.id))
+                    }/>
+                    <TweetBookmarkAction countValue={0} onPress={() => {}} />
 
                 </View>
             </View>
@@ -115,7 +125,6 @@ const styles = StyleSheet.create({
     actionsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        gap: 40,
         paddingVertical: 8,
     }
 })

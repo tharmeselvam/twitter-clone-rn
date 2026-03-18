@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ProfileInfoState } from "../../core/constants/types/ResultsState"
-import { UserFull } from "../../core/constants/types/User";
+import { User, UserFull } from "../../core/constants/types/User";
 import { usersRepository } from "../../core/services/repositories/usersRepository";
+import { fetchSearchedUsers } from "./searchSlice";
 
 type UsersState = {
+    byId: Record<number, User>;
     currentUser: ProfileInfoState;
 }
 
@@ -14,6 +16,7 @@ const initialUserProfileState: ProfileInfoState = {
 }
 
 const initialState: UsersState = {
+    byId: {},
     currentUser: initialUserProfileState,
 }
 
@@ -49,6 +52,13 @@ const usersSlice = createSlice({
             .addCase(fetchOwnProfileInfo.rejected, (state, action) => {
                 state.currentUser.isLoading = false
                 state.currentUser.error = action.payload as string
+            })
+
+            // Fetched searched users
+            .addCase(fetchSearchedUsers.fulfilled, (state, action) => {
+                action.payload.users.forEach(user => {
+                    state.byId[user.id] = user
+                })
             })
     }
 })

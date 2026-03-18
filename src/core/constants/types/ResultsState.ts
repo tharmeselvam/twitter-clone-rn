@@ -1,19 +1,19 @@
-import { Tweet } from "./Tweet";
 import { UserFull } from "./User";
 
-export interface State<T> {
+export interface State {
     isLoading: boolean;
-    data: T | null;
     error: string | null;
 }
 
-export interface SearchResultsState<T> extends State<T[]> {
-    data: T[];
+export interface SearchResultsState extends State {
+    ids: number[];
     status: 'inactive' | 'active';
 }
 
-export interface ProfileInfoState extends State<UserFull>{}
+export interface ProfileInfoState extends State {
+    data: UserFull | null;
+}
 
-export interface TweetsFeedState extends State<Tweet[]>{
-    data: Tweet[];
+export interface TweetsFeedState extends State {
+    tweetIds: number[];
 }
