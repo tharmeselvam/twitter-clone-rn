@@ -1,17 +1,13 @@
 import { Result } from "../../constants/types/Result";
 import apiClient from "../api/apiClient"
 import { SecureStorage } from "../../utils/secureStorage";
-import { isTokenValid } from "../../utils/auth";
+import { usersRepository } from "./usersRepository";
 
 export const authRepository = {
     checkAuthStatus: async () => {
         try {
-            const accessToken = await SecureStorage.getAccessToken()
-        
-            if (!accessToken) {
-                return false
-            }
-            return isTokenValid(accessToken)  
+            const response = await usersRepository.fetchOwnProfile()
+            return response.success 
         } catch {
             return false
         }
